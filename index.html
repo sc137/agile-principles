@@ -1,0 +1,3580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <script>
+    try {
+      const savedTheme = localStorage.getItem("color-scheme");
+      if (savedTheme === "light" || savedTheme === "dark") {
+        document.querySelector('meta[name="color-scheme"]').content = savedTheme;
+      }
+    } catch (_) {
+      /* Ignore storage access errors in restricted contexts */
+    }
+  </script>
+  <title>Agile Studio — Interactive Guide &amp; Practice Lab for Students</title>
+  <style>
+    @layer reset, base, components, utilities;
+
+    @layer reset {
+      *, *::before, *::after {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      h1, h2, h3, h4, p, figure, blockquote, dl, dd {
+        margin-block: 0;
+      }
+      button, input, select, textarea {
+        font: inherit;
+        color: inherit;
+      }
+    }
+
+    @layer base {
+      :root {
+        /* Fallback palette (light default) */
+        --bg-canvas: #f6f7fb;
+        --bg-surface: #ffffff;
+        --bg-subtle: #eef1f7;
+        --bg-muted: #e2e8f0;
+        --text-primary: #0f172a;
+        --text-secondary: #334155;
+        --text-muted: #475569;
+        --border-subtle: #cbd5e1;
+        --border-strong: #64748b;
+        --accent: #3730a3;
+        --accent-hover: #312e81;
+        --accent-soft: #e0e7ff;
+        --accent-ink: #ffffff;
+        --success: #047857;
+        --success-soft: #d1fae5;
+        --warning: #b45309;
+        --warning-soft: #fef3c7;
+        --danger: #be123c;
+        --danger-soft: #ffe4e6;
+        --focus-ring: #c026d3;
+        --shadow-sm: 0 1px 2px rgb(15 23 42 / 0.06);
+        --shadow-md: 0 6px 18px rgb(15 23 42 / 0.08);
+        --radius-sm: 0.5rem;
+        --radius-md: 0.875rem;
+        --radius-lg: 1.25rem;
+        --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+        color-scheme: light dark;
+        accent-color: var(--accent);
+        scrollbar-color: #64748b #e2e8f0;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg-canvas: #0b1120;
+          --bg-surface: #131c31;
+          --bg-subtle: #1b2640;
+          --bg-muted: #273554;
+          --text-primary: #f1f5f9;
+          --text-secondary: #cbd5e1;
+          --text-muted: #94a3b8;
+          --border-subtle: #334155;
+          --border-strong: #64748b;
+          --accent: #818cf8;
+          --accent-hover: #a5b4fc;
+          --accent-soft: #1e1b4b;
+          --accent-ink: #0b1120;
+          --success: #34d399;
+          --success-soft: #064e3b;
+          --warning: #fbbf24;
+          --warning-soft: #451a03;
+          --danger: #fb7185;
+          --danger-soft: #4c0519;
+          --focus-ring: #f472b6;
+          --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
+          --shadow-md: 0 8px 24px rgb(0 0 0 / 0.4);
+          scrollbar-color: #64748b #1b2640;
+        }
+      }
+
+      @supports (color: light-dark(white, black)) {
+        :root {
+          --bg-canvas: light-dark(#f6f7fb, #0b1120);
+          --bg-surface: light-dark(#ffffff, #131c31);
+          --bg-subtle: light-dark(#eef1f7, #1b2640);
+          --bg-muted: light-dark(#e2e8f0, #273554);
+          --text-primary: light-dark(#0f172a, #f1f5f9);
+          --text-secondary: light-dark(#334155, #cbd5e1);
+          --text-muted: light-dark(#475569, #94a3b8);
+          --border-subtle: light-dark(#cbd5e1, #334155);
+          --border-strong: light-dark(#64748b, #64748b);
+          --accent: light-dark(#3730a3, #818cf8);
+          --accent-hover: light-dark(#312e81, #a5b4fc);
+          --accent-soft: light-dark(#e0e7ff, #1e1b4b);
+          --accent-ink: light-dark(#ffffff, #0b1120);
+          --success: light-dark(#047857, #34d399);
+          --success-soft: light-dark(#d1fae5, #064e3b);
+          --warning: light-dark(#b45309, #fbbf24);
+          --warning-soft: light-dark(#fef3c7, #451a03);
+          --danger: light-dark(#be123c, #fb7185);
+          --danger-soft: light-dark(#ffe4e6, #4c0519);
+          --focus-ring: light-dark(#c026d3, #f472b6);
+          scrollbar-color: light-dark(#64748b, #64748b) light-dark(#e2e8f0, #1b2640);
+
+          &:has(> head > meta[name="color-scheme"][content="dark"]) {
+            color-scheme: dark;
+          }
+          &:has(> head > meta[name="color-scheme"][content="light"]) {
+            color-scheme: light;
+          }
+        }
+      }
+
+      /* Fallback for browsers without light-dark() when manually toggled */
+      @supports not (color: light-dark(white, black)) {
+        :root:has(> head > meta[name="color-scheme"][content="dark"]) {
+          color-scheme: dark;
+          --bg-canvas: #0b1120;
+          --bg-surface: #131c31;
+          --bg-subtle: #1b2640;
+          --bg-muted: #273554;
+          --text-primary: #f1f5f9;
+          --text-secondary: #cbd5e1;
+          --text-muted: #94a3b8;
+          --border-subtle: #334155;
+          --accent: #818cf8;
+          --accent-hover: #a5b4fc;
+          --accent-soft: #1e1b4b;
+          --accent-ink: #0b1120;
+          --success: #34d399;
+          --success-soft: #064e3b;
+          --warning: #fbbf24;
+          --warning-soft: #451a03;
+          --danger: #fb7185;
+          --danger-soft: #4c0519;
+        }
+        :root:has(> head > meta[name="color-scheme"][content="light"]) {
+          color-scheme: light;
+          --bg-canvas: #f6f7fb;
+          --bg-surface: #ffffff;
+          --bg-subtle: #eef1f7;
+          --bg-muted: #e2e8f0;
+          --text-primary: #0f172a;
+          --text-secondary: #334155;
+          --text-muted: #475569;
+          --border-subtle: #cbd5e1;
+          --accent: #3730a3;
+          --accent-hover: #312e81;
+          --accent-soft: #e0e7ff;
+          --accent-ink: #ffffff;
+          --success: #047857;
+          --success-soft: #d1fae5;
+          --warning: #b45309;
+          --warning-soft: #fef3c7;
+          --danger: #be123c;
+          --danger-soft: #ffe4e6;
+        }
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 5.5rem;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+      }
+
+      body {
+        font-family: var(--font-sans);
+        line-height: 1.6;
+        background-color: var(--bg-canvas);
+        color: var(--text-primary);
+        min-block-size: 100dvh;
+      }
+
+      :where(a:any-link, button, summary, input, select, textarea, [tabindex]):focus-visible {
+        outline: 3px solid var(--focus-ring);
+        outline-offset: 2px;
+      }
+
+      h1, h2, h3, h4 {
+        line-height: 1.25;
+        letter-spacing: -0.015em;
+      }
+
+      h1 {
+        font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+      }
+      h2 {
+        font-size: clamp(1.375rem, 2.2vw, 1.85rem);
+      }
+      h3 {
+        font-size: 1.15rem;
+      }
+
+      p {
+        max-inline-size: 70ch;
+      }
+
+      code {
+        font-family: var(--font-mono);
+        font-size: 0.9em;
+        background: var(--bg-subtle);
+        padding: 0.1em 0.35em;
+        border-radius: 0.25rem;
+      }
+
+      @media (forced-colors: active) {
+        :root {
+          --focus-ring: Highlight;
+        }
+      }
+    }
+
+    @layer components {
+      .visually-hidden:where(:not(:focus-within, :active)) {
+        position: absolute !important;
+        clip-path: inset(50%) !important;
+        overflow: hidden !important;
+        width: 1px !important;
+        height: 1px !important;
+        margin: -1px !important;
+        padding: 0 !important;
+        border: 0 !important;
+        white-space: nowrap !important;
+      }
+
+      .skip-link {
+        position: fixed;
+        inset-block-start: 0.75rem;
+        inset-inline-start: 0.75rem;
+        z-index: 200;
+        background: var(--accent);
+        color: var(--accent-ink);
+        padding: 0.65rem 1rem;
+        border-radius: var(--radius-sm);
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      /* Header & Sticky Nav */
+      .site-header {
+        position: sticky;
+        inset-block-start: 0;
+        z-index: 50;
+        background: var(--bg-surface);
+        border-block-end: 1px solid var(--border-subtle);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .header-inner {
+        max-inline-size: 76rem;
+        margin-inline: auto;
+        padding: 0.75rem 1.25rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem 1.25rem;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-weight: 800;
+        font-size: 1.05rem;
+        color: var(--text-primary);
+      }
+
+      .brand-mark {
+        display: inline-grid;
+        place-items: center;
+        inline-size: 2rem;
+        block-size: 2rem;
+        border-radius: 0.55rem;
+        background: var(--accent);
+        color: var(--accent-ink);
+        font-weight: 800;
+        font-size: 0.95rem;
+      }
+
+      .primary-nav {
+        flex: 1 1 auto;
+        min-inline-size: 0;
+      }
+
+      .nav-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+      }
+
+      .nav-link {
+        display: inline-flex;
+        align-items: center;
+        min-block-size: 2.5rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: var(--radius-sm);
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.92rem;
+        transition: background-color 0.15s ease, color 0.15s ease;
+
+        &:hover {
+          background: var(--bg-subtle);
+          color: var(--text-primary);
+        }
+
+        &[aria-current="location"] {
+          background: var(--accent-soft);
+          color: var(--accent);
+        }
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      /* Theme toggle branching (matches dark-mode-toggle guide) */
+      .theme-toggle .label-to-light {
+        display: none;
+      }
+      .theme-toggle .label-to-dark {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .theme-toggle .label-to-dark {
+          display: none;
+        }
+        .theme-toggle .label-to-light {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+        }
+      }
+
+      :root:has(> head > meta[name="color-scheme"][content="dark"]) .theme-toggle {
+        .label-to-dark { display: none; }
+        .label-to-light { display: inline-flex; align-items: center; gap: 0.4rem; }
+      }
+      :root:has(> head > meta[name="color-scheme"][content="light"]) .theme-toggle {
+        .label-to-light { display: none; }
+        .label-to-dark { display: inline-flex; align-items: center; gap: 0.4rem; }
+      }
+
+      /* Buttons */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.45rem;
+        min-block-size: 2.5rem;
+        min-inline-size: 2.5rem;
+        padding: 0.5rem 0.95rem;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border-subtle);
+        background: var(--bg-surface);
+        color: var(--text-primary);
+        font-weight: 600;
+        font-size: 0.92rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+
+        &:hover:not(:disabled) {
+          background: var(--bg-subtle);
+          border-color: var(--border-strong);
+        }
+
+        &:active:not(:disabled) {
+          transform: translateY(1px);
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
+        &.btn-primary {
+          background: var(--accent);
+          border-color: var(--accent);
+          color: var(--accent-ink);
+
+          &:hover:not(:disabled) {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+          }
+        }
+
+        &.btn-soft {
+          background: var(--accent-soft);
+          border-color: transparent;
+          color: var(--accent);
+
+          &:hover:not(:disabled) {
+            border-color: var(--accent);
+          }
+        }
+
+        &.btn-sm {
+          min-block-size: 2.1rem;
+          padding: 0.3rem 0.65rem;
+          font-size: 0.84rem;
+        }
+      }
+
+      /* Page Layout */
+      .container {
+        max-inline-size: 76rem;
+        margin-inline: auto;
+        padding: 1.5rem 1.25rem 4rem;
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+      }
+
+      .section-card {
+        background: var(--bg-surface);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-lg);
+        padding: clamp(1.25rem, 2.5vw, 2rem);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .section-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-block-end: 1.5rem;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--accent);
+        background: var(--accent-soft);
+        padding: 0.22rem 0.6rem;
+        border-radius: 999px;
+        margin-block-end: 0.5rem;
+      }
+
+      .lead {
+        color: var(--text-secondary);
+        font-size: 1.05rem;
+        margin-block-start: 0.45rem;
+      }
+
+      /* Hero & Mastery Banner */
+      .hero-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+        gap: 1.5rem;
+        align-items: stretch;
+      }
+
+      .hero-intro {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .compare-strip {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+        gap: 0.75rem;
+        margin-block-start: 0.5rem;
+      }
+
+      .mini-callout {
+        padding: 0.9rem 1rem;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-subtle);
+        background: var(--bg-subtle);
+
+        &.is-agile {
+          border-inline-start: 4px solid var(--success);
+        }
+        &.is-waterfall {
+          border-inline-start: 4px solid var(--warning);
+        }
+
+        strong {
+          display: block;
+          margin-block-end: 0.25rem;
+        }
+        p {
+          font-size: 0.92rem;
+          color: var(--text-secondary);
+        }
+      }
+
+      .mastery-panel {
+        background: var(--bg-subtle);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-md);
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .mastery-top {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.5rem;
+      }
+
+      .mastery-score {
+        font-family: var(--font-mono);
+        font-weight: 800;
+        font-size: 1.4rem;
+        color: var(--accent);
+      }
+
+      progress.mastery-bar {
+        inline-size: 100%;
+        block-size: 0.8rem;
+      }
+
+      .checklist-pills {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+        gap: 0.5rem;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .check-pill {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.4rem;
+        padding: 0.5rem 0.7rem;
+        border-radius: var(--radius-sm);
+        background: var(--bg-surface);
+        border: 1px solid var(--border-subtle);
+        font-size: 0.85rem;
+        font-weight: 600;
+
+        &.done {
+          border-color: var(--success);
+          background: var(--success-soft);
+        }
+      }
+
+      /* Section 1: 4 Manifesto Values */
+      .values-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 28rem), 1fr));
+        gap: 1.25rem;
+      }
+
+      .value-card {
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-md);
+        padding: 1.25rem;
+        background: var(--bg-subtle);
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .value-headline {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.45rem;
+        font-size: 1.05rem;
+        font-weight: 700;
+      }
+
+      .value-left {
+        color: var(--accent);
+        background: var(--accent-soft);
+        padding: 0.2rem 0.55rem;
+        border-radius: 0.35rem;
+      }
+
+      .value-over {
+        font-size: 0.82rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-muted);
+      }
+
+      .value-right {
+        color: var(--text-secondary);
+        border: 1px dashed var(--border-strong);
+        padding: 0.15rem 0.5rem;
+        border-radius: 0.35rem;
+      }
+
+      .spectrum-control {
+        background: var(--bg-surface);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-sm);
+        padding: 0.85rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .spectrum-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text-muted);
+      }
+
+      .spectrum-range {
+        inline-size: 100%;
+        min-block-size: 2rem;
+        cursor: pointer;
+      }
+
+      .spectrum-feedback {
+        padding: 0.65rem 0.8rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.9rem;
+        background: var(--bg-subtle);
+        border-inline-start: 4px solid var(--accent);
+
+        &[data-zone="chaos"] {
+          border-inline-start-color: var(--warning);
+          background: var(--warning-soft);
+        }
+        &[data-zone="sweet"] {
+          border-inline-start-color: var(--success);
+          background: var(--success-soft);
+        }
+        &[data-zone="rigid"] {
+          border-inline-start-color: var(--danger);
+          background: var(--danger-soft);
+        }
+      }
+
+      .analogy-box {
+        font-size: 0.92rem;
+        color: var(--text-secondary);
+        background: var(--bg-surface);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-sm);
+        padding: 0.8rem;
+      }
+
+      .value-footer {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        margin-block-start: auto;
+      }
+
+      /* Section 2: 12 Principles Explorer */
+      .principles-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-block-end: 1.25rem;
+      }
+
+      .filter-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+      }
+
+      .filter-btn {
+        min-block-size: 2.25rem;
+        padding: 0.35rem 0.8rem;
+        border-radius: 999px;
+        border: 1px solid var(--border-subtle);
+        background: var(--bg-subtle);
+        color: var(--text-secondary);
+        font-size: 0.86rem;
+        font-weight: 600;
+        cursor: pointer;
+
+        &[aria-pressed="true"] {
+          background: var(--accent);
+          border-color: var(--accent);
+          color: var(--accent-ink);
+        }
+      }
+
+      .search-controls {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .text-input, .select-input {
+        min-block-size: 2.35rem;
+        padding: 0.4rem 0.75rem;
+        border: 1px solid var(--border-strong);
+        border-radius: var(--radius-sm);
+        background: var(--bg-surface);
+        color: var(--text-primary);
+      }
+
+      .accordion {
+        display: flex;
+        flex-direction: column;
+        gap: 0.65rem;
+      }
+
+      .principle-item {
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-md);
+        background: var(--bg-surface);
+        overflow: clip;
+
+        &[open] {
+          border-color: var(--accent);
+          box-shadow: var(--shadow-sm);
+        }
+      }
+
+      .principle-summary {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        padding: 0.9rem 1rem;
+        cursor: pointer;
+        font-weight: 700;
+        background: var(--bg-subtle);
+
+        &::-webkit-details-marker {
+          display: none;
+        }
+
+        &::before {
+          content: "";
+          inline-size: 0.75rem;
+          block-size: 0.75rem;
+          flex-shrink: 0;
+          border-inline-end: 2.5px solid currentColor;
+          border-block-end: 2.5px solid currentColor;
+          transform: rotate(-45deg);
+        }
+
+        details[open] > &::before {
+          transform: rotate(45deg);
+        }
+
+        &:hover {
+          background: var(--bg-muted);
+        }
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        .principle-summary::before {
+          transition: transform 0.2s ease;
+        }
+        details::details-content {
+          interpolate-size: allow-keywords;
+          overflow: clip;
+          contain: layout;
+          transition: block-size 0.28s ease-in-out, content-visibility 0.28s ease-in-out allow-discrete;
+        }
+        details:not([open])::details-content {
+          block-size: 0;
+        }
+      }
+
+      .principle-num {
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        padding: 0.15rem 0.45rem;
+        border-radius: 0.35rem;
+        background: var(--accent-soft);
+        color: var(--accent);
+        flex-shrink: 0;
+      }
+
+      .principle-tag {
+        margin-inline-start: auto;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        padding: 0.15rem 0.5rem;
+        border-radius: 999px;
+        border: 1px solid var(--border-subtle);
+        background: var(--bg-surface);
+      }
+
+      .principle-body {
+        padding: 1rem 1.2rem 1.2rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+        gap: 1rem;
+        border-block-start: 1px solid var(--border-subtle);
+      }
+
+      .principle-quote {
+        grid-column: 1 / -1;
+        padding: 0.75rem 1rem;
+        border-inline-start: 4px solid var(--accent);
+        background: var(--bg-subtle);
+        border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        font-style: italic;
+      }
+
+      .info-tile {
+        padding: 0.85rem;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border-subtle);
+        background: var(--bg-subtle);
+
+        h3 {
+          font-size: 0.92rem;
+          margin-block-end: 0.35rem;
+          color: var(--accent);
+        }
+        p {
+          font-size: 0.92rem;
+          color: var(--text-secondary);
+        }
+      }
+
+      .principle-actions {
+        grid-column: 1 / -1;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding-block-start: 0.25rem;
+      }
+
+      /* Tabs Pattern (compliant with tabs guide) */
+      .tablist {
+        display: flex;
+        overflow-x: auto;
+        gap: 0.25rem;
+        border-block-end: 1px solid var(--border-subtle);
+        margin-block-end: 1rem;
+      }
+
+      .tab-btn {
+        position: relative;
+        flex: none;
+        min-block-size: 2.6rem;
+        padding: 0.55rem 1rem;
+        border: 0;
+        background: transparent;
+        color: var(--text-secondary);
+        font-weight: 700;
+        cursor: pointer;
+        border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+
+        &:hover {
+          background: var(--bg-subtle);
+          color: var(--text-primary);
+        }
+
+        &[aria-selected="true"] {
+          color: var(--accent);
+
+          &::after {
+            content: "";
+            position: absolute;
+            inset: auto 0 0;
+            border-block-end: 3px solid var(--accent);
+          }
+        }
+      }
+
+      .tabpanel-inner {
+        padding: 0.25rem 0;
+      }
+
+      /* Section 3: Waterfall vs Agile Trade-off Sandbox */
+      .sandbox-layout {
+        display: grid;
+        grid-template-columns: minmax(min(100%, 19rem), 22rem) 1fr;
+        gap: 1.5rem;
+        align-items: start;
+      }
+
+      @media (max-width: 54rem) {
+        .sandbox-layout {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .control-panel {
+        background: var(--bg-subtle);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-md);
+        padding: 1.15rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+
+        label, legend {
+          font-weight: 700;
+          font-size: 0.9rem;
+        }
+      }
+
+      fieldset.field-group {
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-sm);
+        padding: 0.75rem;
+        margin: 0;
+      }
+
+      .radio-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        min-block-size: 2rem;
+        cursor: pointer;
+        font-size: 0.92rem;
+      }
+
+      .sim-output {
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-md);
+        padding: 1.15rem;
+        background: var(--bg-subtle);
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .kpi-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+        gap: 0.75rem;
+      }
+
+      .kpi-box {
+        background: var(--bg-surface);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-sm);
+        padding: 0.8rem;
+
+        .kpi-label {
+          font-size: 0.78rem;
+          color: var(--text-muted);
+          font-weight: 600;
+        }
+        .kpi-value {
+          font-family: var(--font-mono);
+          font-size: 1.35rem;
+          font-weight: 800;
+          margin-block-start: 0.15rem;
+        }
+      }
+
+      .chart-frame {
+        background: var(--bg-surface);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-sm);
+        padding: 0.75rem;
+      }
+
+      .sim-table {
+        inline-size: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+        background: var(--bg-surface);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+
+        th, td {
+          padding: 0.55rem 0.7rem;
+          border-block-end: 1px solid var(--border-subtle);
+          text-align: start;
+        }
+        th {
+          background: var(--bg-muted);
+          font-weight: 700;
+        }
+      }
+
+      /* Section 4: Sprint & Kanban Simulator */
+      .sprint-topbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.95rem 1.1rem;
+        background: var(--bg-subtle);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-md);
+        margin-block-end: 1rem;
+      }
+
+      .sprint-metrics {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .metric-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.35rem 0.7rem;
+        border-radius: var(--radius-sm);
+        background: var(--bg-surface);
+        border: 1px solid var(--border-subtle);
+        font-size: 0.88rem;
+        font-weight: 600;
+
+        &.alert {
+          background: var(--warning-soft);
+          border-color: var(--warning);
+        }
+        &.good {
+          background: var(--success-soft);
+          border-color: var(--success);
+        }
+      }
+
+      .kanban-board {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+        gap: 0.85rem;
+      }
+
+      .kanban-col {
+        background: var(--bg-subtle);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-md);
+        padding: 0.75rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.65rem;
+        min-block-size: 16rem;
+
+        &.wip-exceeded {
+          border: 2px solid var(--danger);
+          background: var(--danger-soft);
+        }
+      }
+
+      .col-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.4rem;
+        padding-block-end: 0.4rem;
+        border-block-end: 1px solid var(--border-subtle);
+
+        h3 {
+          font-size: 0.95rem;
+        }
+      }
+
+      .col-count {
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        font-weight: 700;
+        padding: 0.1rem 0.45rem;
+        border-radius: 999px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-subtle);
+      }
+
+      .story-card {
+        background: var(--bg-surface);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-sm);
+        padding: 0.75rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+        box-shadow: var(--shadow-sm);
+
+        &.is-curveball {
+          border-inline-start: 4px solid var(--warning);
+        }
+      }
+
+      .story-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.35rem;
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        font-weight: 700;
+      }
+
+      .story-title {
+        font-size: 0.92rem;
+        font-weight: 700;
+      }
+
+      .story-desc {
+        font-size: 0.83rem;
+        color: var(--text-secondary);
+      }
+
+      .story-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin-block-start: 0.25rem;
+      }
+
+      /* Section 5: Knowledge Tests */
+      .scenario-card {
+        background: var(--bg-subtle);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-md);
+        padding: 1.15rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+      }
+
+      .choice-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+      }
+
+      .choice-btn {
+        text-align: start;
+        justify-content: flex-start;
+        padding: 0.75rem 1rem;
+        line-height: 1.45;
+        inline-size: 100%;
+
+        &.is-correct {
+          background: var(--success-soft);
+          border-color: var(--success);
+        }
+        &.is-wrong {
+          background: var(--danger-soft);
+          border-color: var(--danger);
+        }
+      }
+
+      .feedback-banner {
+        padding: 0.85rem 1rem;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border-subtle);
+        background: var(--bg-surface);
+        font-size: 0.94rem;
+
+        &.ok {
+          border-inline-start: 4px solid var(--success);
+          background: var(--success-soft);
+        }
+        &.warn {
+          border-inline-start: 4px solid var(--warning);
+          background: var(--warning-soft);
+        }
+        &.bad {
+          border-inline-start: 4px solid var(--danger);
+          background: var(--danger-soft);
+        }
+      }
+
+      .matcher-grid {
+        display: grid;
+        gap: 0.85rem;
+        margin-block-end: 1.25rem;
+      }
+
+      .matcher-row {
+        display: grid;
+        grid-template-columns: 1fr minmax(14rem, 22rem);
+        gap: 0.75rem;
+        align-items: center;
+        padding: 0.85rem;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border-subtle);
+        background: var(--bg-subtle);
+      }
+
+      @media (max-width: 46rem) {
+        .matcher-row {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .quiz-question-box {
+        background: var(--bg-subtle);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-md);
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .quiz-option-label {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.65rem;
+        padding: 0.75rem 0.9rem;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border-subtle);
+        background: var(--bg-surface);
+        cursor: pointer;
+
+        &:has(:checked) {
+          border-color: var(--accent);
+          background: var(--accent-soft);
+        }
+
+        input {
+          margin-block-start: 0.2rem;
+          flex-shrink: 0;
+        }
+      }
+
+      /* Native Modal Dialog (compliant with dialog guide) */
+      dialog {
+        max-inline-size: min(44rem, calc(100vw - 2rem));
+        max-block-size: min(85dvh, 42rem);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-lg);
+        padding: 0;
+        background: var(--bg-surface);
+        color: var(--text-primary);
+        box-shadow: var(--shadow-md);
+      }
+
+      dialog:modal {
+        overscroll-behavior: contain;
+      }
+
+      dialog::backdrop {
+        background: rgb(15 23 42 / 0.58);
+        overflow: hidden;
+        overscroll-behavior: contain;
+      }
+
+      .dialog-inner {
+        padding: 1.4rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .dialog-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        border-block-end: 1px solid var(--border-subtle);
+        padding-block-end: 0.75rem;
+      }
+
+      .glossary-list {
+        display: grid;
+        gap: 0.75rem;
+        margin: 0;
+
+        div {
+          padding: 0.75rem;
+          border-radius: var(--radius-sm);
+          background: var(--bg-subtle);
+          border: 1px solid var(--border-subtle);
+        }
+        dt {
+          font-weight: 800;
+          color: var(--accent);
+        }
+        dd {
+          margin-inline-start: 0;
+          margin-block-start: 0.2rem;
+          font-size: 0.92rem;
+          color: var(--text-secondary);
+        }
+      }
+
+      .site-footer {
+        border-block-start: 1px solid var(--border-subtle);
+        background: var(--bg-surface);
+        padding: 1.5rem 1.25rem;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+
+        a {
+          color: var(--accent);
+          font-weight: 600;
+          text-underline-offset: 0.18em;
+        }
+      }
+
+      .footer-inner {
+        max-inline-size: 76rem;
+        margin-inline: auto;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.85rem 1.5rem;
+      }
+
+      .footer-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.45rem 1rem;
+      }
+
+      .footer-links a {
+        display: inline-flex;
+        align-items: center;
+        min-block-size: 2rem;
+      }
+
+      /* Certificate Milestone & Printable Certificate */
+      .cert-milestone {
+        margin-block-start: 1.75rem;
+        padding: 1.25rem;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-subtle);
+        background: var(--bg-subtle);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+
+        &.is-unlocked {
+          border-color: var(--success);
+          background: var(--success-soft);
+        }
+      }
+
+      .cert-req-list {
+        list-style: none;
+        padding: 0;
+        margin: 0.55rem 0 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .cert-req-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.28rem 0.65rem;
+        border-radius: 999px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-subtle);
+        font-size: 0.84rem;
+        font-weight: 600;
+
+        &.done {
+          border-color: var(--success);
+          color: var(--success);
+        }
+      }
+
+      .cert-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .cert-field {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.3rem;
+
+        label {
+          font-weight: 700;
+          font-size: 0.95rem;
+        }
+
+        input {
+          min-block-size: 2.75rem;
+          font-size: max(1rem, 1em);
+        }
+
+        input:user-invalid,
+        input[aria-invalid="true"] {
+          border-color: var(--danger);
+        }
+      }
+
+      .cert-error {
+        color: var(--danger);
+        font-size: 0.88rem;
+        font-weight: 600;
+      }
+
+      /* Always render certificate in crisp paper-white tones so screen preview matches PDF */
+      .certificate-sheet {
+        color-scheme: light;
+        background: #ffffff;
+        color: #0f172a;
+        border: 6px double #3730a3;
+        border-radius: 0.75rem;
+        padding: clamp(1.25rem, 3vw, 2.25rem);
+        text-align: center;
+        position: relative;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .cert-inner-frame {
+        border: 1px solid #cbd5e1;
+        padding: clamp(1rem, 2.5vw, 1.75rem);
+        border-radius: 0.45rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.7rem;
+      }
+
+      .cert-seal {
+        display: inline-grid;
+        place-items: center;
+        inline-size: 3.1rem;
+        block-size: 3.1rem;
+        border-radius: 999px;
+        background: #3730a3;
+        color: #ffffff;
+        font-weight: 800;
+        font-size: 1.15rem;
+        letter-spacing: 0.02em;
+        border: 3px solid #c7d2fe;
+      }
+
+      .cert-kicker {
+        font-size: 0.82rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: #3730a3;
+      }
+
+      .cert-title {
+        font-size: clamp(1.5rem, 3vw, 2.1rem);
+        font-weight: 800;
+        color: #0f172a;
+        margin: 0;
+      }
+
+      .cert-subtitle {
+        font-size: 0.95rem;
+        color: #475569;
+        margin: 0;
+      }
+
+      .cert-recipient {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(1.5rem, 3.2vw, 2.2rem);
+        font-weight: 700;
+        color: #1e1b4b;
+        border-block-end: 2px solid #94a3b8;
+        padding: 0.25rem 1.5rem 0.35rem;
+        min-inline-size: min(18rem, 100%);
+      }
+
+      .cert-summary {
+        font-size: 0.92rem;
+        color: #334155;
+        max-inline-size: 52ch;
+      }
+
+      .cert-stats {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        color: #1e293b;
+        background: #f1f5f9;
+        padding: 0.45rem 0.9rem;
+        border-radius: 999px;
+        border: 1px solid #cbd5e1;
+      }
+
+      .cert-signatures {
+        inline-size: 100%;
+        margin-block-start: 1rem;
+        padding-block-start: 0.75rem;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(10rem, 1fr));
+        gap: 1.5rem;
+      }
+
+      .cert-sig-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+      }
+
+      .cert-sig-line {
+        inline-size: min(14rem, 100%);
+        border-block-end: 1.5px solid #475569;
+        padding-block-end: 0.25rem;
+        font-family: Georgia, "Times New Roman", serif;
+        font-style: italic;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      .cert-sig-label {
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #475569;
+      }
+
+      #print-certificate-sheet {
+        display: none;
+      }
+
+      @media print {
+        @page {
+          size: letter landscape;
+          margin: 0.45in;
+        }
+
+        body {
+          background: #ffffff !important;
+          color: #0f172a !important;
+          min-block-size: auto;
+          print-color-adjust: exact;
+          -webkit-print-color-adjust: exact;
+        }
+
+        .site-header,
+        main,
+        .site-footer,
+        dialog,
+        .skip-link {
+          display: none !important;
+        }
+
+        #print-certificate-sheet {
+          display: block !important;
+          inline-size: 100%;
+        }
+
+        #print-certificate-sheet .certificate-sheet {
+          box-shadow: none;
+          break-inside: avoid;
+          padding: 1.75rem;
+        }
+
+        #print-certificate-sheet .cert-inner-frame {
+          padding: 1.75rem 2rem;
+          gap: 0.9rem;
+        }
+      }
+    }
+
+    @layer utilities {
+      .row-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: center;
+      }
+      .muted {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link visually-hidden">Skip to main content</a>
+  <div id="live-announcer" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">Ag</span>
+        <span>Agile Studio</span>
+      </div>
+
+      <nav class="primary-nav" aria-label="Course sections">
+        <ul class="nav-list">
+          <li><a class="nav-link" href="#overview">Overview</a></li>
+          <li><a class="nav-link" href="#values">4 Values</a></li>
+          <li><a class="nav-link" href="#principles">12 Principles</a></li>
+          <li><a class="nav-link" href="#sandbox">Trade-off Sandbox</a></li>
+          <li><a class="nav-link" href="#simulator">Sprint Board</a></li>
+          <li><a class="nav-link" href="#tests">Knowledge Tests</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button type="button" class="btn btn-soft btn-sm" id="open-glossary-btn">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+          Glossary
+        </button>
+
+        <button type="button" class="btn btn-sm theme-toggle" id="theme-toggle-btn">
+          <span class="label-to-dark">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"></path>
+            </svg>
+            Dark theme
+          </span>
+          <span class="label-to-light">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"></circle>
+              <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+            </svg>
+            Light theme
+          </span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" tabindex="-1" class="container">
+    <!-- OVERVIEW & MASTERY TRACKER -->
+    <section id="overview" class="section-card" aria-labelledby="overview-heading">
+      <div class="hero-grid">
+        <div class="hero-intro">
+          <div>
+            <span class="eyebrow">Student Field Guide</span>
+            <h1 id="overview-heading">Learn Agile Without the Corporate Jargon</h1>
+            <p class="lead">
+              Ever worked on a college group project where everyone worked alone for weeks, merged everything the night before Demo Day, and half the app broke? That is what Agile was invented to fix.
+            </p>
+          </div>
+          <p>
+            Instead of betting everything on one giant plan up front, <strong>Agile</strong> means building in small, working slices, talking to teammates and users early, and adjusting quickly when reality changes.
+          </p>
+          <div class="compare-strip">
+            <div class="mini-callout is-waterfall">
+              <strong>The "Finals Cram" Way (Waterfall)</strong>
+              <p>Spend weeks writing specs and building parts separately. Discover bugs and misunderstood requirements right before the deadline.</p>
+            </div>
+            <div class="mini-callout is-agile">
+              <strong>The "Iterative Lab" Way (Agile)</strong>
+              <p>Ship a tiny working version in Week 1, test it with classmates, adapt to rubric updates, and polish steadily without all-nighters.</p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="mastery-panel" aria-labelledby="mastery-heading">
+          <div>
+            <div class="mastery-top">
+              <h2 id="mastery-heading">Your Study Progress</h2>
+              <span class="mastery-score" id="mastery-percent">0%</span>
+            </div>
+            <p class="muted" id="mastery-caption">Explore values, study principles, run simulators, and pass the knowledge tests.</p>
+          </div>
+          <label for="mastery-progress" class="visually-hidden">Overall Agile study completion</label>
+          <progress id="mastery-progress" class="mastery-bar" value="0" max="100">0%</progress>
+          <ul class="checklist-pills" id="mastery-checklist">
+            <li class="check-pill" id="pill-values"><span>4 Values</span><span id="count-values">0/4</span></li>
+            <li class="check-pill" id="pill-principles"><span>12 Principles</span><span id="count-principles">0/12</span></li>
+            <li class="check-pill" id="pill-sims"><span>2 Simulators</span><span id="count-sims">0/2</span></li>
+            <li class="check-pill" id="pill-tests"><span>Knowledge Tests</span><span id="count-tests">0/3</span></li>
+          </ul>
+          <div class="row-wrap">
+            <a href="#values" class="btn btn-primary btn-sm">Start Exploring</a>
+            <button type="button" class="btn btn-primary btn-sm" id="overview-claim-cert-btn" hidden>Claim Certificate</button>
+            <button type="button" class="btn btn-sm" id="reset-progress-btn">Reset Progress</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- SECTION 1: THE 4 AGILE VALUES -->
+    <section id="values" class="section-card" aria-labelledby="values-heading">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">Part 1 &bull; The Manifesto Foundation</span>
+          <h2 id="values-heading">The 4 Agile Values: Finding the Sweet Spot</h2>
+          <p class="lead">
+            The 2001 Agile Manifesto famously says: <em>"While there is value in the items on the right, we value the items on the left more."</em> Drag each balance slider to test what happens when a student team goes too far in either direction.
+          </p>
+        </div>
+      </div>
+
+      <div class="values-grid" id="values-container"></div>
+    </section>
+
+    <!-- SECTION 2: THE 12 PRINCIPLES -->
+    <section id="principles" class="section-card" aria-labelledby="principles-heading">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">Part 2 &bull; The 12 Principles</span>
+          <h2 id="principles-heading">12 Principles Translated for Campus &amp; Hackathon Teams</h2>
+          <p class="lead">
+            Filter by theme, search for a topic, and open principles to see plain-English translations and real student project examples.
+          </p>
+        </div>
+      </div>
+
+      <div class="principles-toolbar">
+        <div class="filter-pills" role="group" aria-label="Filter principles by theme">
+          <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">All (12)</button>
+          <button type="button" class="filter-btn" data-filter="value" aria-pressed="false">Delivering Value</button>
+          <button type="button" class="filter-btn" data-filter="collab" aria-pressed="false">Change &amp; Collab</button>
+          <button type="button" class="filter-btn" data-filter="team" aria-pressed="false">Healthy Teams</button>
+          <button type="button" class="filter-btn" data-filter="craft" aria-pressed="false">Craft &amp; Reflection</button>
+        </div>
+
+        <div class="search-controls">
+          <search>
+            <label for="principle-search" class="visually-hidden">Search the 12 Agile principles</label>
+            <input type="search" id="principle-search" class="text-input" placeholder="Search (e.g. demo, sleep, change)...">
+          </search>
+          <button type="button" class="btn btn-sm" id="toggle-all-principles" aria-expanded="false">Expand all</button>
+        </div>
+      </div>
+
+      <div class="accordion" id="principles-accordion" aria-label="The 12 Agile Principles"></div>
+      <p id="principles-empty" class="muted" hidden>No principles match your current filter or search text.</p>
+    </section>
+
+    <!-- SECTION 3: WATERFALL VS AGILE TRADE-OFF SANDBOX -->
+    <section id="sandbox" class="section-card" aria-labelledby="sandbox-heading">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">Part 3 &bull; Interactive Lab 1</span>
+          <h2 id="sandbox-heading">Waterfall vs. Agile Semester Trade-Off Sandbox</h2>
+          <p class="lead">
+            Your 4-person team has <strong>6 weeks</strong> to build a <em>Campus Food-Truck Finder</em> app. Adjust the project conditions below and watch how Waterfall and Agile handle surprises differently.
+          </p>
+        </div>
+      </div>
+
+      <div class="sandbox-layout">
+        <form class="control-panel" id="sandbox-form">
+          <fieldset class="field-group">
+            <legend>1. Team Process Style</legend>
+            <label class="radio-row">
+              <input type="radio" name="methodology" value="agile" checked>
+              <span>Iterative Agile (Three 2-week Sprints)</span>
+            </label>
+            <label class="radio-row">
+              <input type="radio" name="methodology" value="waterfall">
+              <span>Big-Bang Waterfall (Plan all, code, test at end)</span>
+            </label>
+          </fieldset>
+
+          <div class="field-group">
+            <label for="surprise-slider">2. Mid-Semester Requirement Change: <span id="surprise-label">Moderate (Week 4 rubric tweak)</span></label>
+            <input type="range" id="surprise-slider" min="0" max="2" step="1" value="1">
+          </div>
+
+          <div class="field-group">
+            <label for="sync-slider">3. Team Feedback &amp; Check-ins: <span id="sync-label">Twice weekly (10-min standup)</span></label>
+            <input type="range" id="sync-slider" min="0" max="2" step="1" value="2">
+          </div>
+
+          <div class="field-group">
+            <label for="scope-slider">4. Feature Simplicity (Principle 10): <span id="scope-label">Focused MVP (Core map + hours)</span></label>
+            <input type="range" id="scope-slider" min="0" max="2" step="1" value="2">
+          </div>
+
+          <button type="button" class="btn btn-primary" id="run-sandbox-btn">Simulate 6-Week Semester</button>
+        </form>
+
+        <div class="sim-output">
+          <div class="kpi-row">
+            <div class="kpi-box">
+              <div class="kpi-label">Working Features Shipped</div>
+              <div class="kpi-value" id="kpi-features">--</div>
+            </div>
+            <div class="kpi-box">
+              <div class="kpi-label">User / Prof Satisfaction</div>
+              <div class="kpi-value" id="kpi-satisfaction">--</div>
+            </div>
+            <div class="kpi-box">
+              <div class="kpi-label">Finals-Week Crunch Risk</div>
+              <div class="kpi-value" id="kpi-crunch">--</div>
+            </div>
+          </div>
+
+          <div class="tablist" role="tablist" aria-label="Simulation output view" id="sandbox-tabs">
+            <button type="button" class="tab-btn" role="tab" id="tab-chart" aria-selected="true" tabindex="0">Visual Trajectory</button>
+            <button type="button" class="tab-btn" role="tab" id="tab-table" aria-selected="false" tabindex="-1">Week-by-Week Data Table</button>
+          </div>
+
+          <div class="tabpanel-stack">
+            <div role="tabpanel" id="panel-chart" aria-labelledby="tab-chart" tabindex="0">
+              <div class="tabpanel-inner">
+                <figure class="chart-frame">
+                  <svg id="sandbox-svg" role="img" aria-labelledby="svg-title" viewBox="0 0 600 220" width="100%" height="220">
+                    <title id="svg-title">Weekly working value delivered versus team stress over 6 weeks</title>
+                  </svg>
+                  <figcaption class="muted" id="sandbox-caption">
+                    Solid indigo line: Working app value usable by students. Dashed amber line: Unfinished work &amp; stress buildup.
+                  </figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div role="tabpanel" id="panel-table" aria-labelledby="tab-table" hidden="until-found">
+              <div class="tabpanel-inner">
+                <table class="sim-table">
+                  <caption>Weekly simulation breakdown (Weeks 1 to 6)</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Week</th>
+                      <th scope="col">Team Focus</th>
+                      <th scope="col">Working Value</th>
+                      <th scope="col">Stress / Rework</th>
+                    </tr>
+                  </thead>
+                  <tbody id="sandbox-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="feedback-banner ok" id="sandbox-takeaway">
+            Adjust any control or click <strong>Simulate 6-Week Semester</strong> to inspect how Agile principles change the outcome.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: SPRINT & KANBAN BOARD SIMULATOR -->
+    <section id="simulator" class="section-card" aria-labelledby="simulator-heading">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">Part 4 &bull; Interactive Lab 2</span>
+          <h2 id="simulator-heading">Hands-On Sprint &amp; Kanban Simulator</h2>
+          <p class="lead">
+            Run a 2-week Sprint for your <em>Campus Study-Spot Finder</em> project. Pull realistic tasks from the Backlog, respect your team's exam-week capacity and WIP limit, and handle a surprise curveball!
+          </p>
+        </div>
+      </div>
+
+      <div class="sprint-topbar">
+        <div class="sprint-metrics">
+          <span class="metric-chip" id="chip-capacity">Sprint Load: 0 / 10 pts</span>
+          <span class="metric-chip" id="chip-wip">In Progress WIP: 0 / 2 cards</span>
+          <span class="metric-chip" id="chip-done">Delivered Value: 0 pts</span>
+        </div>
+
+        <div class="row-wrap">
+          <label for="wip-limit-select" class="muted">WIP Limit:</label>
+          <select id="wip-limit-select" class="select-input">
+            <option value="2" selected>2 cards (Recommended)</option>
+            <option value="3">3 cards</option>
+            <option value="5">5 cards (Multitasking chaos)</option>
+          </select>
+          <button type="button" class="btn btn-soft btn-sm" id="curveball-btn">Trigger Curveball</button>
+          <button type="button" class="btn btn-primary btn-sm" id="sprint-review-btn">Run Sprint Review</button>
+          <button type="button" class="btn btn-sm" id="reset-board-btn">Reset Board</button>
+        </div>
+      </div>
+
+      <div id="sprint-coach-banner" class="feedback-banner" aria-live="polite">
+        Coach Tip: Move 2–3 high-value stories from <strong>Backlog</strong> to <strong>To Do</strong> (stay within 10 pts for Sustainable Pace), then move up to 2 cards at a time into <strong>In Progress</strong>.
+      </div>
+
+      <div class="kanban-board" style="margin-block-start: 1rem;" id="kanban-board">
+        <div class="kanban-col" data-col="backlog">
+          <div class="col-header">
+            <h3>1. Backlog</h3>
+            <span class="col-count" id="col-count-backlog">0</span>
+          </div>
+          <div class="col-cards" id="col-backlog"></div>
+        </div>
+
+        <div class="kanban-col" data-col="todo">
+          <div class="col-header">
+            <h3>2. Sprint To Do</h3>
+            <span class="col-count" id="col-count-todo">0</span>
+          </div>
+          <div class="col-cards" id="col-todo"></div>
+        </div>
+
+        <div class="kanban-col" data-col="doing" id="col-wrapper-doing">
+          <div class="col-header">
+            <h3>3. In Progress</h3>
+            <span class="col-count" id="col-count-doing">0</span>
+          </div>
+          <div class="col-cards" id="col-doing"></div>
+        </div>
+
+        <div class="kanban-col" data-col="done">
+          <div class="col-header">
+            <h3>4. Done (Demo-Ready)</h3>
+            <span class="col-count" id="col-count-done">0</span>
+          </div>
+          <div class="col-cards" id="col-done"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: KNOWLEDGE TESTS -->
+    <section id="tests" class="section-card" aria-labelledby="tests-heading">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">Part 5 &bull; Knowledge Tests</span>
+          <h2 id="tests-heading">Check Your Agile Instincts</h2>
+          <p class="lead">
+            Put what you learned to work across three test formats: realistic group-project scenarios, a principle matcher, and a 10-question mastery check.
+          </p>
+        </div>
+      </div>
+
+      <div class="tablist" role="tablist" aria-label="Knowledge test modes" id="test-tabs">
+        <button type="button" class="tab-btn" role="tab" id="tab-scenarios" aria-selected="true" tabindex="0">1. Team Scenarios (5)</button>
+        <button type="button" class="tab-btn" role="tab" id="tab-matcher" aria-selected="false" tabindex="-1">2. Principle Matcher (4)</button>
+        <button type="button" class="tab-btn" role="tab" id="tab-quiz" aria-selected="false" tabindex="-1">3. Mastery Quiz (10)</button>
+      </div>
+
+      <!-- Test Mode 1: Scenarios -->
+      <div role="tabpanel" id="panel-scenarios" aria-labelledby="tab-scenarios" tabindex="0">
+        <div class="tabpanel-inner" id="scenarios-container"></div>
+      </div>
+
+      <!-- Test Mode 2: Matcher -->
+      <div role="tabpanel" id="panel-matcher" aria-labelledby="tab-matcher" hidden="until-found">
+        <div class="tabpanel-inner">
+          <p class="muted" style="margin-block-end: 0.9rem;">
+            Match each realistic college project habit or problem to the Agile Principle it illustrates best.
+          </p>
+          <div class="matcher-grid" id="matcher-container"></div>
+          <div class="row-wrap">
+            <button type="button" class="btn btn-primary" id="check-matcher-btn">Check Matches</button>
+            <button type="button" class="btn" id="reset-matcher-btn">Clear Matches</button>
+          </div>
+          <div id="matcher-result" class="feedback-banner" style="margin-block-start: 1rem;" hidden></div>
+        </div>
+      </div>
+
+      <!-- Test Mode 3: 10-Question Graded Quiz -->
+      <div role="tabpanel" id="panel-quiz" aria-labelledby="tab-quiz" hidden="until-found">
+        <div class="tabpanel-inner" id="quiz-container"></div>
+      </div>
+
+      <!-- Certificate Unlock & Claim Card -->
+      <div class="cert-milestone" id="cert-milestone-card" aria-labelledby="cert-milestone-title">
+        <div>
+          <h3 id="cert-milestone-title">Completion Certificate: Explore Agile Principles</h3>
+          <p class="muted" id="cert-milestone-desc">
+            Complete all 5 Team Scenarios, pass the 4-item Principle Matcher, and submit the 10-question Mastery Quiz to unlock your printable PDF certificate.
+          </p>
+          <ul class="cert-req-list">
+            <li class="cert-req-badge" id="cert-req-scenarios">Team Scenarios: 0/5</li>
+            <li class="cert-req-badge" id="cert-req-matcher">Principle Matcher: Pending</li>
+            <li class="cert-req-badge" id="cert-req-quiz">Mastery Quiz: Pending</li>
+          </ul>
+        </div>
+        <div>
+          <button type="button" class="btn btn-primary" id="claim-cert-btn" hidden>Claim Certificate</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p><strong>Agile Studio</strong> &bull; Prepared by <strong>Professor Sable</strong> (<a href="https://cantus.us/msac" target="_blank" rel="noopener noreferrer">cantus.us/msac</a>).</p>
+      <nav aria-label="Official Agile references">
+        <ul class="footer-links">
+          <li><a href="https://agilemanifesto.org/" target="_blank" rel="noopener noreferrer">Agile Manifesto</a></li>
+          <li><a href="https://agilemanifesto.org/principles.html" target="_blank" rel="noopener noreferrer">12 Agile Principles</a></li>
+          <li><a href="https://www.agilealliance.org/agile101/" target="_blank" rel="noopener noreferrer">Agile Alliance: Agile 101</a></li>
+          <li><a href="https://scrumguides.org/" target="_blank" rel="noopener noreferrer">The Scrum Guide</a></li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- Glossary Modal Dialog -->
+  <dialog id="glossary-dialog" closedby="any" aria-labelledby="glossary-title">
+    <div class="dialog-inner">
+      <div class="dialog-header">
+        <h1 id="glossary-title" style="font-size: 1.35rem;">Agile Terms in Plain Student English</h1>
+        <form method="dialog">
+          <button type="submit" class="btn btn-sm" value="close" autofocus>Close</button>
+        </form>
+      </div>
+      <dl class="glossary-list">
+        <div>
+          <dt>Sprint (Iteration)</dt>
+          <dd>A short, fixed timebox (usually 1–2 weeks) where your team finishes a small, working piece of the project you could demo right away.</dd>
+        </div>
+        <div>
+          <dt>Product Backlog</dt>
+          <dd>Your prioritized wish list of features and fixes. High-value essentials sit at the top; "nice-to-have" bells and whistles stay lower down.</dd>
+        </div>
+        <div>
+          <dt>User Story &amp; Story Points</dt>
+          <dd>A feature written from a user's perspective ("As a student, I want...") paired with a rough effort estimate (1 = tiny, 5 = big/uncertain).</dd>
+        </div>
+        <div>
+          <dt>MVP (Minimum Viable Product)</dt>
+          <dd>The simplest working version of your app that solves the core problem—no dark mode or extra animations until the core actually works.</dd>
+        </div>
+        <div>
+          <dt>WIP Limit (Work In Progress)</dt>
+          <dd>A cap on how many tasks your team starts at once. Stopping starting and starting finishing prevents half-done work from piling up.</dd>
+        </div>
+        <div>
+          <dt>Retrospective ("Retro")</dt>
+          <dd>A 15-minute team check-in after a Sprint to ask: What went well? What tripped us up? What one thing will we tweak next week?</dd>
+        </div>
+        <div>
+          <dt>Technical Debt</dt>
+          <dd>Quick-and-messy shortcuts ("we'll clean up this code later") that slow your team down every time you add a new feature.</dd>
+        </div>
+      </dl>
+    </div>
+  </dialog>
+
+  <!-- Sprint Review Modal Dialog -->
+  <dialog id="review-dialog" closedby="any" aria-labelledby="review-title">
+    <div class="dialog-inner">
+      <div class="dialog-header">
+        <h1 id="review-title" style="font-size: 1.35rem;">Sprint Review &amp; Retrospective</h1>
+        <form method="dialog">
+          <button type="submit" class="btn btn-sm" value="close" autofocus>Close</button>
+        </form>
+      </div>
+      <div id="review-body"></div>
+    </div>
+  </dialog>
+
+  <!-- Certificate Claim & Print Modal Dialog -->
+  <dialog id="certificate-dialog" closedby="any" aria-labelledby="certificate-dialog-title">
+    <div class="dialog-inner">
+      <div class="dialog-header">
+        <h1 id="certificate-dialog-title" style="font-size: 1.35rem;">Claim Your Certificate</h1>
+        <form method="dialog">
+          <button type="submit" class="btn btn-sm" value="close">Close</button>
+        </form>
+      </div>
+      <form id="certificate-form" class="cert-form" aria-labelledby="certificate-dialog-title" novalidate>
+        <div class="cert-field">
+          <label for="cert-student-name">Your Full Name <span aria-hidden="true">*</span></label>
+          <span id="cert-name-hint" class="muted">Enter your name as you want it to appear on the PDF for Professor Sable.</span>
+          <input type="text" id="cert-student-name" name="studentName" class="text-input" autocomplete="name" required autofocus aria-describedby="cert-name-hint cert-name-error">
+          <p id="cert-name-error" class="cert-error" role="alert" hidden>Please enter your full name before printing your certificate.</p>
+        </div>
+        <div id="cert-preview-slot"></div>
+        <div class="row-wrap" style="justify-content: space-between;">
+          <span class="muted">Tip: In your print dialog, choose <strong>Save as PDF</strong>.</span>
+          <button type="submit" class="btn btn-primary" id="print-cert-btn">Print / Save as PDF</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <div id="print-certificate-sheet" aria-hidden="true"></div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      /* -----------------------------
+         1. DATA: VALUES, PRINCIPLES, STORIES, TESTS
+      ------------------------------ */
+      const AGILE_VALUES = [
+        {
+          id: "v1",
+          left: "Individuals and interactions",
+          right: "Processes and tools",
+          analogy: "Group Project Lens: Picking Jira/Notion templates for 3 hours will not save a team that is too awkward to message each other when stuck. A 5-minute whiteboard chat beats 40 status tags.",
+          myth: "Myth check: Agile does NOT ban tools. Trello, GitHub, and checklists are great—as long as they help humans talk, not replace talking.",
+          zones: {
+            chaos: "100% Unstructured Chat: Everyone talks over Slack/Discord, but nobody writes down who owns what. Work gets duplicated by Friday.",
+            sweet: "Agile Sweet Spot (Balanced): Lightweight tools (like a simple Kanban board) support frequent, honest 5-minute team conversations.",
+            rigid: "Tool-Obsessed Trap: You spend half the week updating tickets, labels, and approval forms while zero working code gets shipped."
+          }
+        },
+        {
+          id: "v2",
+          left: "Working software",
+          right: "Comprehensive documentation",
+          analogy: "Group Project Lens: At Demo Day, your professor and classmates want to click through a real running app—not read a 35-page Word spec for an app that crashes on launch.",
+          myth: "Myth check: Agile still values clear READMEs and API notes! It just refuses to write giant upfront manuals before testing if the idea works.",
+          zones: {
+            chaos: "Zero Notes At All: Code works today, but nobody remembers how to run the server or install dependencies next week.",
+            sweet: "Agile Sweet Spot (Balanced): Working features come first every week, backed by crisp, useful docs (README, setup steps, key decisions).",
+            rigid: "Paperwork Mountain: Three weeks writing detailed UML diagrams and specs before writing line 1 of code—half of it outdated once coding starts."
+          }
+        },
+        {
+          id: "v3",
+          left: "Customer collaboration",
+          right: "Contract negotiation",
+          analogy: "Group Project Lens: Treat your TA, professor, or target student users as partners. Show an early ugly prototype in Week 2 instead of arguing in Week 6 about what the rubric 'technically said.'",
+          myth: "Myth check: Agreeing on scope still matters. Collaboration means staying aligned as both sides learn what actually helps users.",
+          zones: {
+            chaos: "Endless Yes-Person Mode: You say yes to every random suggestion without checking deadlines or project goals.",
+            sweet: "Agile Sweet Spot (Balanced): Clear project goals plus frequent demos with users/TAs so misunderstandings get caught while they are cheap to fix.",
+            rigid: "Lawyering the Rubric: Refusing obvious UX improvements because 'you didn't ask for that in Week 1'—leading to a project nobody likes."
+          }
+        },
+        {
+          id: "v4",
+          left: "Responding to change",
+          right: "Following a plan",
+          analogy: "Group Project Lens: Midterm week hits or a teammate discovers a better library. An Agile team adapts the plan instead of stubbornly grinding toward a broken Week 1 schedule.",
+          myth: "Myth check: Agile teams plan constantly! They just treat plans as living maps, not stone tablets.",
+          zones: {
+            chaos: "Zero Plan / Thrashing: Every morning the team switches ideas and abandons half-finished work. Nothing ever reaches Done.",
+            sweet: "Agile Sweet Spot (Balanced): Plan carefully for the next 1–2 weeks, inspect real progress, and adjust the roadmap calmly when new facts arrive.",
+            rigid: "Zombie Plan Mode: Following a Week 1 Gantt chart off a cliff even after user testing proves the main screen is confusing."
+          }
+        }
+      ];
+
+      const AGILE_PRINCIPLES = [
+        {
+          num: 1,
+          theme: "value",
+          themeLabel: "Delivering Value",
+          short: "Satisfy users early and continuously",
+          official: "Our highest priority is to satisfy the customer through early and continuous delivery of valuable software.",
+          plain: "Don't make people wait until the final deadline to see if your work actually helps them. Give them useful pieces early and often.",
+          campus: "Instead of hiding your Campus Study-Spot app until Week 10, share a working searchable list of 5 library floors in Week 2 so classmates can test it.",
+          antiPattern: "Working in secret for a month and unveiling everything on Demo Day—only to hear 'Wait, that's not how students search for rooms.'"
+        },
+        {
+          num: 2,
+          theme: "collab",
+          themeLabel: "Change & Collab",
+          short: "Welcome changing requirements, even late",
+          official: "Welcome changing requirements, even late in development. Agile processes harness change for the customer's competitive advantage.",
+          plain: "When new information arrives late, don't panic or get defensive. Because you built in small pieces, adapting makes your project stronger.",
+          campus: "Two weeks before the hackathon showcase, students ask for 'open past midnight' filtering. An Agile MVP architecture lets you add that filter in an afternoon.",
+          antiPattern: "Hardcoding everything tightly or refusing feedback because 'our design was finalized last month.'"
+        },
+        {
+          num: 3,
+          theme: "value",
+          themeLabel: "Delivering Value",
+          short: "Deliver working software frequently",
+          official: "Deliver working software frequently, from a couple of weeks to a couple of months, with a preference to the shorter timescale.",
+          plain: "Aim for short cycles (1–2 weeks in college!) where something real actually runs end-to-end.",
+          campus: "Every Sunday evening, your team merges a working slice you could demo right then—Week 1: list view; Week 2: filters; Week 3: live crowd ratings.",
+          antiPattern: "Saying 'I'm 90% done with backend' for four straight weeks with nothing anyone can click."
+        },
+        {
+          num: 4,
+          theme: "collab",
+          themeLabel: "Change & Collab",
+          short: "Builders and stakeholders work together daily",
+          official: "Business people and developers must work together daily throughout the project.",
+          plain: "The people who understand the user problem and the people building the solution shouldn't live on separate planets.",
+          campus: "If one teammate is designing UX/interviews and two are coding, check in together every day or two rather than tossing mockups over a wall.",
+          antiPattern: "Designer hands off 20 static screens in Week 1, disappears until Week 5, and finds out half the features couldn't be built."
+        },
+        {
+          num: 5,
+          theme: "team",
+          themeLabel: "Healthy Teams",
+          short: "Trust motivated teammates",
+          official: "Build projects around motivated individuals. Give them the environment and support they need, and trust them to get the job done.",
+          plain: "Agree on clear goals, remove blockers, and trust teammates to solve problems instead of micromanaging every keystroke.",
+          campus: "Share the goal ('Make login reliable by Thursday') and ask 'Need any help?' rather than demanding hourly screenshots of their code editor.",
+          antiPattern: "One self-appointed 'manager' hovering over teammates or rewriting their code without discussing it."
+        },
+        {
+          num: 6,
+          theme: "collab",
+          themeLabel: "Change & Collab",
+          short: "Face-to-face conversation is fastest",
+          official: "The most efficient and effective method of conveying information to and within a development team is face-to-face conversation.",
+          plain: "Real-time conversation (in person or quick video/voice call) resolves confusion 10x faster than a 30-message text thread.",
+          campus: "Stuck arguing in Discord for 45 minutes about an API format? Hop on a 6-minute call with screen share and sketch it out.",
+          antiPattern: "Passive-aggressive comment threads on GitHub or long unreadable wall-of-text messages."
+        },
+        {
+          num: 7,
+          theme: "value",
+          themeLabel: "Delivering Value",
+          short: "Working software is the primary measure",
+          official: "Working software is the primary measure of progress.",
+          plain: "Hours spent, lines of code written, or pretty slide decks don't equal progress. Only working, tested features count.",
+          campus: "Saying 'We held four 2-hour meetings and created 18 Jira tickets' means 0% progress if the app still won't boot.",
+          antiPattern: "Measuring team effort by how late people stayed up rather than what actually works."
+        },
+        {
+          num: 8,
+          theme: "team",
+          themeLabel: "Healthy Teams",
+          short: "Maintain a sustainable pace",
+          official: "Agile processes promote sustainable development. The sponsors, developers, and users should be able to maintain a constant pace indefinitely.",
+          plain: "No hero all-nighters! Burned-out students write buggy code and resent their team. Steady, predictable hours win.",
+          campus: "Cap Sprint work realistically during midterms so everyone sleeps 7–8 hours and ships clean work every week.",
+          antiPattern: "Overpromising 8 features a week, pulling 3 a.m. crunches, and crashing into buggy chaos by Week 6."
+        },
+        {
+          num: 9,
+          theme: "craft",
+          themeLabel: "Craft & Reflection",
+          short: "Technical excellence enables agility",
+          official: "Continuous attention to technical excellence and good design enhances agility.",
+          plain: "Clean code, clear naming, and basic automated tests aren't 'slowing down'—they are what lets you change things safely later.",
+          campus: "Writing 5 quick tests and keeping functions tidy means adding a last-minute feature takes 20 minutes instead of breaking three other pages.",
+          antiPattern: "Copy-pasting spaghetti code ('we'll fix it after the deadline') until nobody dares touch anything."
+        },
+        {
+          num: 10,
+          theme: "craft",
+          themeLabel: "Craft & Reflection",
+          short: "Simplicity: maximize work not done",
+          official: "Simplicity--the art of maximizing the amount of work not done--is essential.",
+          plain: "The smartest feature is often the unnecessary one you decided NOT to build. Focus ruthlessly on what users actually need.",
+          campus: "Skip building custom animated avatars and OAuth social login when a simple guest nickname gets your study-group matcher working today.",
+          antiPattern: "Feature creep: piling on cool ideas until the core assignment barely works."
+        },
+        {
+          num: 11,
+          theme: "team",
+          themeLabel: "Healthy Teams",
+          short: "Self-organizing teams build best",
+          official: "The best architectures, requirements, and designs emerge from self-organizing teams.",
+          plain: "When the people doing the work decide together how to split and design it, ownership and quality skyrocket.",
+          campus: "Instead of waiting for one bossy teammate to assign chores, the whole group reviews the backlog together and volunteers based on strengths and learning goals.",
+          antiPattern: "Top-down task orders where half the team feels zero ownership over the design."
+        },
+        {
+          num: 12,
+          theme: "craft",
+          themeLabel: "Craft & Reflection",
+          short: "Reflect and tune regularly",
+          official: "At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behavior accordingly.",
+          plain: "Don't wait until the course ends to complain about what wasn't working. Hold a 15-minute check-in every Sprint and change one habit.",
+          campus: "After Sprint 1, your team notices pull requests sit unreviewed for 3 days—so you agree on a 'review within 24 hours' norm for Sprint 2.",
+          antiPattern: "Repeating the exact same communication mistakes every single week until peer evaluations."
+        }
+      ];
+
+      const INITIAL_STORIES = [
+        { id: "s1", title: "Search Study Spots by Noise Level", desc: "Core MVP: filter Quiet / Cafe-vibe / Group rooms.", points: 3, value: 35, col: "backlog", curveball: false },
+        { id: "s2", title: "Live Open/Closed Building Hours", desc: "Shows if a building closes in under 1 hour.", points: 2, value: 30, col: "backlog", curveball: false },
+        { id: "s3", title: "Outlet & Wi-Fi Rating Badge", desc: "Quick 1-tap crowd rating on each spot.", points: 3, value: 25, col: "backlog", curveball: false },
+        { id: "s4", title: "Save Favorite Spots Locally", desc: "Keep top 3 go-to rooms pinned at top.", points: 2, value: 20, col: "backlog", curveball: false },
+        { id: "s5", title: "Custom 3D Campus Map Animations", desc: "Fancy WebGL flythrough (tempting feature creep!).", points: 5, value: 5, col: "backlog", curveball: false },
+        { id: "s6", title: "Accessibility Ramp & Elevator Filter", desc: "High-impact filter requested in student interviews.", points: 2, value: 30, col: "backlog", curveball: false }
+      ];
+
+      const CURVEBALL_CARDS = [
+        { id: "cb1", title: "TA Rubric Update: Export Study Schedule", desc: "Professor added a small demo requirement—adapt calmly!", points: 2, value: 25, col: "todo", curveball: true },
+        { id: "cb2", title: "Bug Fix: Mobile Search Keyboard Overlap", desc: "Found during live user test on a classmate's phone.", points: 1, value: 20, col: "todo", curveball: true }
+      ];
+
+      const SCENARIOS = [
+        {
+          id: "sc1",
+          title: "Scenario 1: The Week-1 Architecture Novel",
+          prompt: "Your teammate wants everyone to spend the first 2 weeks writing a 25-page design document and database blueprint before writing any code or mockups.",
+          choices: [
+            { text: "Agree—writing every detail upfront guarantees zero changes later.", correct: false, reason: "Even the best Week 1 plan misses real-world surprises. That's the Waterfall trap (Value 2 & 4)." },
+            { text: "Sketch a 1-page shared diagram in 30 minutes, then build a tiny working end-to-end slice this week.", correct: true, reason: "Spot on! Value 2 ('Working software over comprehensive documentation') + Principle 3 ('Deliver working software frequently')." },
+            { text: "Skip planning completely and tell everyone to code random pages without talking.", correct: false, reason: "Agile still values lightweight alignment—no coordination creates merge chaos." }
+          ]
+        },
+        {
+          id: "sc2",
+          title: "Scenario 2: The 45-Minute Discord Debate",
+          prompt: "Two teammates are writing long paragraphs back and forth in group chat about how the backend JSON response should look, and both are getting frustrated.",
+          choices: [
+            { text: "Start a 5-minute voice/video call or meet after class with a whiteboard to agree on an example JSON.", correct: true, reason: "Exactly right! Principle 6: Face-to-face (or live real-time) conversation resolves ambiguity far faster than text threads." },
+            { text: "Create a formal 10-step ticket escalation process so nobody chats directly.", correct: false, reason: "Value 1 favors individuals and interactions over heavy processes." },
+            { text: "Have each person code their own format and fix it on Demo morning.", correct: false, reason: "Delaying integration guarantees painful rework right before the deadline." }
+          ]
+        },
+        {
+          id: "sc3",
+          title: "Scenario 3: Midterm Week Overcommitment",
+          prompt: "Half your team has two midterm exams this week, but someone insists on keeping the same huge 18-point task list because 'we promised it in Week 1.'",
+          choices: [
+            { text: "Force all-nighters on Friday so the Week 1 burndown chart looks pretty.", correct: false, reason: "Violates Principle 8 (Sustainable pace) and Value 4 (Responding to change over following a plan)." },
+            { text: "Re-scope the Sprint to the top 2 essential MVP items so everyone sleeps and ships quality work.", correct: true, reason: "Great call! Principle 8 (Sustainable pace) + Principle 10 (Simplicity) keep quality high without burnout." },
+            { text: "Mark unfinished work as 'Done' anyway so nobody notices.", correct: false, reason: "Principle 7 says working software—not checked boxes—is the true measure of progress." }
+          ]
+        },
+        {
+          id: "sc4",
+          title: "Scenario 4: The Surprise User Feedback",
+          prompt: "Ten days before Showcase Day, three classmates test your prototype and immediately get confused by your clever custom navigation icons.",
+          choices: [
+            { text: "Thank them, replace the cryptic icons with clear labeled tabs right away, and re-test tomorrow.", correct: true, reason: "Yes! Value 3 (Customer collaboration) + Principle 2 (Welcome changing requirements) turn late feedback into a better product." },
+            { text: "Ignore it because changing UI labels wasn't in the original plan.", correct: false, reason: "Stubbornly following an outdated plan hurts actual users." },
+            { text: "Add a 5-page user manual explaining how to decode the icons.", correct: false, reason: "Fixing the product beats documenting a confusing design (Value 2)." }
+          ]
+        },
+        {
+          id: "sc5",
+          title: "Scenario 5: Repeating the Same Mess",
+          prompt: "For the second week in a row, pull requests sat unreviewed until Sunday night and caused stressful merge conflicts.",
+          choices: [
+            { text: "Wait until end-of-semester peer reviews to dock points from teammates.", correct: false, reason: "Waiting until the end fixes nothing for the project." },
+            { text: "Run a quick 15-minute Retrospective and agree on a new rule: small PRs reviewed within 24 hours.", correct: true, reason: "Nailed it! Principle 12 ('Reflect at regular intervals and tune behavior') turns friction into fast improvement." },
+            { text: "Stop using code reviews entirely so merges happen faster.", correct: false, reason: "Dropping quality checks creates technical debt that slows the team down later (Principle 9)." }
+          ]
+        }
+      ];
+
+      const MATCHER_ITEMS = [
+        {
+          id: "m1",
+          clue: "Cutting 'AI chat & animated confetti' so your team finishes the core search bar cleanly by Friday.",
+          answer: "p10"
+        },
+        {
+          id: "m2",
+          clue: "Holding a 15-minute team check-in after Sprint 1 to fix why code merges kept colliding.",
+          answer: "p12"
+        },
+        {
+          id: "m3",
+          clue: "Refusing to pull all-nighters every weekend and pacing Sprint goals realistically around midterms.",
+          answer: "p8"
+        },
+        {
+          id: "m4",
+          clue: "Showing a rough, clickable Week 2 prototype to classmates instead of waiting until Finals Week.",
+          answer: "p1"
+        }
+      ];
+
+      const MATCHER_OPTIONS = [
+        { value: "", label: "-- Choose matching Agile Principle --" },
+        { value: "p1", label: "Principle 1: Satisfy users via early & continuous delivery" },
+        { value: "p8", label: "Principle 8: Maintain a sustainable, steady pace" },
+        { value: "p10", label: "Principle 10: Simplicity — maximize work not done" },
+        { value: "p12", label: "Principle 12: Reflect regularly and tune team habits" }
+      ];
+
+      const QUIZ_QUESTIONS = [
+        {
+          q: "1. What does 'Working software over comprehensive documentation' actually mean for a student team?",
+          options: [
+            "Never write README files, comments, or design notes.",
+            "Prioritize a real, usable app over writing huge upfront specs before testing ideas.",
+            "Documentation is only written by professors.",
+            "Spend equal time writing a 50-page manual for every feature."
+          ],
+          correct: 1,
+          explain: "Agile still values crisp, useful docs—it just rejects giant upfront specs as a substitute for working software."
+        },
+        {
+          q: "2. How does the Agile Manifesto treat the items on the RIGHT side (e.g., processes, tools, plans)?",
+          options: [
+            "They are strictly forbidden in Agile teams.",
+            "They still have value, just less than the people-and-product priorities on the left.",
+            "They matter more than the left side once a project grows.",
+            "They only apply to Waterfall teams."
+          ],
+          correct: 1,
+          explain: "The Manifesto explicitly states: 'While there is value in the items on the right, we value the items on the left more.'"
+        },
+        {
+          q: "3. According to Principle 7, what is the PRIMARY measure of progress in Agile?",
+          options: [
+            "Hours logged in the library",
+            "Number of tasks in the Backlog",
+            "Working software that actually runs",
+            "How detailed the Week 1 Gantt chart is"
+          ],
+          correct: 2,
+          explain: "Principle 7 states: 'Working software is the primary measure of progress.'"
+        },
+        {
+          q: "4. Why do Agile teams put a WIP (Work In Progress) limit on their Kanban 'In Progress' column?",
+          options: [
+            "To make teammates sit idle on purpose",
+            "To prevent half-finished multitasking and finish valuable features faster",
+            "To avoid testing code before Demo Day",
+            "To increase the size of the Backlog"
+          ],
+          correct: 1,
+          explain: "Limiting WIP stops teams from starting 6 half-baked tasks at once and helps them finish and deliver working slices."
+        },
+        {
+          q: "5. Which Agile Principle warns against building 'nice-to-have' extras before the core product works?",
+          options: [
+            "Principle 10: Simplicity — maximizing the amount of work not done",
+            "Principle 6: Face-to-face conversation",
+            "Principle 5: Motivated individuals",
+            "Principle 2: Welcome changing requirements"
+          ],
+          correct: 0,
+          explain: "Principle 10 highlights Simplicity—cutting unnecessary work so your team delivers what truly matters."
+        },
+        {
+          q: "6. A teammate wants to skip writing clean functions and tests because 'we're moving fast in Agile.' Why does Principle 9 disagree?",
+          options: [
+            "Clean code is only required in Waterfall.",
+            "Messy code creates technical debt that makes future changes slow and fragile.",
+            "Principle 9 says tests replace all user feedback.",
+            "Agile teams never refactor code."
+          ],
+          correct: 1,
+          explain: "Principle 9 states that continuous attention to technical excellence and good design actually enhances agility."
+        },
+        {
+          q: "7. What is the main purpose of a Sprint Retrospective?",
+          options: [
+            "To demo features to external users for grading",
+            "To blame teammates for missed deadlines",
+            "To reflect as a team on how you worked together and pick one concrete improvement for next Sprint",
+            "To lock the project scope permanently"
+          ],
+          correct: 2,
+          explain: "Principle 12 calls for regular reflection so the team can tune and adjust its habits."
+        },
+        {
+          q: "8. Mid-semester, a TA clarifies a rubric requirement. How does an Agile team respond best?",
+          options: [
+            "Re-prioritize the Backlog and fold the change into the next short Sprint.",
+            "Refuse the update because Week 1 plans cannot change.",
+            "Throw away the entire codebase and restart from scratch.",
+            "Pull consecutive all-nighters without adjusting any lower-priority tasks."
+          ],
+          correct: 0,
+          explain: "Agile welcomes late changes (Principle 2) by re-ordering the Backlog and swapping out lower-value items."
+        },
+        {
+          q: "9. Which communication method does Principle 6 identify as the most efficient and effective?",
+          options: [
+            "Formal multi-page email memos",
+            "Face-to-face (or real-time live) conversation",
+            "Automated weekly status spreadsheets",
+            "Silent independent coding until finals"
+          ],
+          correct: 1,
+          explain: "Principle 6 highlights face-to-face conversation as the fastest way to share understanding and clear up confusion."
+        },
+        {
+          q: "10. What does 'self-organizing team' (Principle 11) look like in a college capstone group?",
+          options: [
+            "Nobody talks and everyone invents a separate app.",
+            "One student dictates every line of code while others obey.",
+            "The team collaborates to divide work, pick technical designs, and own outcomes together.",
+            "The professor assigns every daily task individually."
+          ],
+          correct: 2,
+          explain: "Self-organizing teams share ownership over architecture, task breakdown, and collaboration."
+        }
+      ];
+
+      /* -----------------------------
+         2. STATE & PERSISTENCE
+      ------------------------------ */
+      const STORAGE_KEY = "agile-studio-progress-v1";
+
+      const defaultProgress = () => ({
+        valuesExplored: {},
+        principlesStudied: {},
+        sandboxRun: false,
+        sprintReviewed: false,
+        scenariosSolved: {},
+        matcherPassed: false,
+        quizBestScore: 0,
+        quizCompleted: false,
+        studentName: ""
+      });
+
+      let progress = loadProgress();
+
+      function loadProgress() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return defaultProgress();
+          return { ...defaultProgress(), ...JSON.parse(raw) };
+        } catch (_) {
+          return defaultProgress();
+        }
+      }
+
+      function saveProgress() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+        } catch (_) {
+          /* Ignore storage write issues */
+        }
+        renderProgressUI();
+      }
+
+      const announcer = document.getElementById("live-announcer");
+      function announce(msg) {
+        announcer.textContent = "";
+        requestAnimationFrame(() => {
+          announcer.textContent = msg;
+        });
+      }
+
+      /* -----------------------------
+         3. THEME TOGGLE (dark-mode-toggle guidance)
+      ------------------------------ */
+      const themeMeta = document.querySelector('meta[name="color-scheme"]');
+      const themeToggleBtn = document.getElementById("theme-toggle-btn");
+      const systemDarkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+      function getRenderedScheme() {
+        if (themeMeta.content === "light" || themeMeta.content === "dark") {
+          return themeMeta.content;
+        }
+        return systemDarkQuery.matches ? "dark" : "light";
+      }
+
+      themeToggleBtn.addEventListener("click", () => {
+        const current = getRenderedScheme();
+        const target = current === "dark" ? "light" : "dark";
+        const systemScheme = systemDarkQuery.matches ? "dark" : "light";
+
+        try {
+          if (target === systemScheme) {
+            localStorage.removeItem("color-scheme");
+            themeMeta.content = "light dark";
+          } else {
+            localStorage.setItem("color-scheme", target);
+            themeMeta.content = target;
+          }
+        } catch (_) {
+          themeMeta.content = target;
+        }
+        announce(`Switched to ${target} theme.`);
+      });
+
+      window.addEventListener("storage", (event) => {
+        if (event.key === "color-scheme") {
+          themeMeta.content = event.newValue === "light" || event.newValue === "dark" ? event.newValue : "light dark";
+        }
+      });
+
+      /* -----------------------------
+         4. PROGRESS DASHBOARD
+      ------------------------------ */
+      let wasCertEligible = false;
+
+      function isCertificateEligible() {
+        return (
+          Object.keys(progress.scenariosSolved).length === SCENARIOS.length &&
+          Boolean(progress.matcherPassed) &&
+          Boolean(progress.quizCompleted)
+        );
+      }
+
+      function renderProgressUI() {
+        const vCount = Object.keys(progress.valuesExplored).length;
+        const pCount = Object.keys(progress.principlesStudied).length;
+        const sCount = (progress.sandboxRun ? 1 : 0) + (progress.sprintReviewed ? 1 : 0);
+        const solvedCount = Object.keys(progress.scenariosSolved).length;
+        const scenariosPassed = solvedCount === SCENARIOS.length ? 1 : 0;
+        const tCount = scenariosPassed + (progress.matcherPassed ? 1 : 0) + (progress.quizCompleted ? 1 : 0);
+
+        document.getElementById("count-values").textContent = `${vCount}/4`;
+        document.getElementById("count-principles").textContent = `${pCount}/12`;
+        document.getElementById("count-sims").textContent = `${sCount}/2`;
+        document.getElementById("count-tests").textContent = `${tCount}/3`;
+
+        document.getElementById("pill-values").classList.toggle("done", vCount === 4);
+        document.getElementById("pill-principles").classList.toggle("done", pCount === 12);
+        document.getElementById("pill-sims").classList.toggle("done", sCount === 2);
+        document.getElementById("pill-tests").classList.toggle("done", tCount === 3);
+
+        // Weighted mastery percentage
+        const pct = Math.round(
+          (vCount / 4) * 20 +
+          (pCount / 12) * 30 +
+          (sCount / 2) * 20 +
+          (tCount / 3) * 30
+        );
+        document.getElementById("mastery-progress").value = pct;
+        document.getElementById("mastery-progress").textContent = `${pct}%`;
+        document.getElementById("mastery-percent").textContent = `${pct}%`;
+
+        // Certificate milestone updates
+        const eligible = isCertificateEligible();
+        const reqScenarios = document.getElementById("cert-req-scenarios");
+        const reqMatcher = document.getElementById("cert-req-matcher");
+        const reqQuiz = document.getElementById("cert-req-quiz");
+        const milestoneCard = document.getElementById("cert-milestone-card");
+        const milestoneDesc = document.getElementById("cert-milestone-desc");
+        const claimBtn = document.getElementById("claim-cert-btn");
+        const overviewClaimBtn = document.getElementById("overview-claim-cert-btn");
+
+        reqScenarios.textContent = scenariosPassed ? "✓ Team Scenarios: 5/5" : `Team Scenarios: ${solvedCount}/${SCENARIOS.length}`;
+        reqScenarios.classList.toggle("done", Boolean(scenariosPassed));
+
+        reqMatcher.textContent = progress.matcherPassed ? "✓ Principle Matcher: 4/4" : "Principle Matcher: Pending";
+        reqMatcher.classList.toggle("done", Boolean(progress.matcherPassed));
+
+        reqQuiz.textContent = progress.quizCompleted ? `✓ Mastery Quiz: ${progress.quizBestScore}%` : "Mastery Quiz: Pending";
+        reqQuiz.classList.toggle("done", Boolean(progress.quizCompleted));
+
+        milestoneCard.classList.toggle("is-unlocked", eligible);
+        claimBtn.hidden = !eligible;
+        overviewClaimBtn.hidden = !eligible;
+
+        milestoneDesc.textContent = eligible
+          ? "All scenarios and knowledge checks are complete! Enter your name and save your certificate as a PDF for Professor Sable."
+          : "Complete all 5 Team Scenarios, pass the 4-item Principle Matcher, and submit the 10-question Mastery Quiz to unlock your printable PDF certificate.";
+
+        if (eligible && !wasCertEligible) {
+          announce("Congratulations! All scenarios and knowledge tests are complete. You can now claim your certificate.");
+        }
+        wasCertEligible = eligible;
+      }
+
+      document.getElementById("reset-progress-btn").addEventListener("click", () => {
+        progress = defaultProgress();
+        saveProgress();
+        renderValues();
+        renderPrinciples();
+        renderScenarios();
+        renderQuiz();
+        announce("Study progress has been reset.");
+      });
+
+      /* -----------------------------
+         5. SECTION 1: 4 AGILE VALUES
+      ------------------------------ */
+      function renderValues() {
+        const container = document.getElementById("values-container");
+        container.innerHTML = "";
+
+        for (const v of AGILE_VALUES) {
+          const card = document.createElement("article");
+          card.className = "value-card";
+
+          const isDone = Boolean(progress.valuesExplored[v.id]);
+          card.innerHTML = `
+            <div class="value-headline">
+              <span class="value-left">${v.left}</span>
+              <span class="value-over">over</span>
+              <span class="value-right">${v.right}</span>
+            </div>
+
+            <div class="spectrum-control">
+              <label for="slider-${v.id}" style="font-weight:700; font-size:0.88rem;">
+                Test Team Balance: <span id="slider-readout-${v.id}">Agile Sweet Spot (30 / 70 balance)</span>
+              </label>
+              <input type="range" id="slider-${v.id}" class="spectrum-range" min="0" max="100" step="10" value="30">
+              <div class="spectrum-labels">
+                <span>100% Left Only</span>
+                <span>Agile Sweet Spot</span>
+                <span>100% Right Only</span>
+              </div>
+              <div class="spectrum-feedback" id="feedback-${v.id}" data-zone="sweet">
+                ${v.zones.sweet}
+              </div>
+            </div>
+
+            <div class="analogy-box">
+              <strong>College Project Example:</strong> ${v.analogy}
+            </div>
+
+            <div class="value-footer">
+              <button type="button" class="btn btn-sm" data-myth-btn="${v.id}" aria-expanded="false">Reveal Myth Check</button>
+              <button type="button" class="btn btn-sm ${isDone ? "btn-primary" : "btn-soft"}" data-value-done="${v.id}" aria-pressed="${isDone}">
+                ${isDone ? "✓ Explored" : "Mark as Explored"}
+              </button>
+            </div>
+            <p class="muted" id="myth-${v.id}" hidden>${v.myth}</p>
+          `;
+
+          const slider = card.querySelector(`#slider-${v.id}`);
+          const readout = card.querySelector(`#slider-readout-${v.id}`);
+          const feedback = card.querySelector(`#feedback-${v.id}`);
+
+          slider.addEventListener("input", () => {
+            const val = Number(slider.value);
+            if (val <= 10) {
+              readout.textContent = "Too far left (Zero structure)";
+              feedback.dataset.zone = "chaos";
+              feedback.textContent = v.zones.chaos;
+            } else if (val <= 50) {
+              readout.textContent = "Agile Sweet Spot (Left leads, right supports)";
+              feedback.dataset.zone = "sweet";
+              feedback.textContent = v.zones.sweet;
+            } else {
+              readout.textContent = "Too far right (Bureaucracy trap)";
+              feedback.dataset.zone = "rigid";
+              feedback.textContent = v.zones.rigid;
+            }
+            if (!progress.valuesExplored[v.id]) {
+              progress.valuesExplored[v.id] = true;
+              saveProgress();
+              const doneBtn = card.querySelector(`[data-value-done="${v.id}"]`);
+              doneBtn.setAttribute("aria-pressed", "true");
+              doneBtn.className = "btn btn-sm btn-primary";
+              doneBtn.textContent = "✓ Explored";
+            }
+          });
+
+          const mythBtn = card.querySelector(`[data-myth-btn="${v.id}"]`);
+          const mythText = card.querySelector(`#myth-${v.id}`);
+          mythBtn.addEventListener("click", () => {
+            const open = mythBtn.getAttribute("aria-expanded") === "true";
+            mythBtn.setAttribute("aria-expanded", String(!open));
+            mythText.hidden = open;
+          });
+
+          const doneBtn = card.querySelector(`[data-value-done="${v.id}"]`);
+          doneBtn.addEventListener("click", () => {
+            if (progress.valuesExplored[v.id]) {
+              delete progress.valuesExplored[v.id];
+            } else {
+              progress.valuesExplored[v.id] = true;
+            }
+            saveProgress();
+            const nowDone = Boolean(progress.valuesExplored[v.id]);
+            doneBtn.setAttribute("aria-pressed", String(nowDone));
+            doneBtn.className = `btn btn-sm ${nowDone ? "btn-primary" : "btn-soft"}`;
+            doneBtn.textContent = nowDone ? "✓ Explored" : "Mark as Explored";
+          });
+
+          container.appendChild(card);
+        }
+      }
+
+      /* -----------------------------
+         6. SECTION 2: 12 PRINCIPLES EXPLORER
+      ------------------------------ */
+      let activeThemeFilter = "all";
+      let searchTerm = "";
+
+      function renderPrinciples() {
+        const accordion = document.getElementById("principles-accordion");
+        const emptyMsg = document.getElementById("principles-empty");
+        accordion.innerHTML = "";
+
+        const query = searchTerm.trim().toLowerCase();
+        const filtered = AGILE_PRINCIPLES.filter((p) => {
+          const themeMatch = activeThemeFilter === "all" || p.theme === activeThemeFilter;
+          const textBlob = `${p.short} ${p.official} ${p.plain} ${p.campus} ${p.antiPattern}`.toLowerCase();
+          const queryMatch = !query || textBlob.includes(query);
+          return themeMatch && queryMatch;
+        });
+
+        emptyMsg.hidden = filtered.length > 0;
+
+        for (const p of filtered) {
+          const details = document.createElement("details");
+          details.className = "principle-item";
+          if (p.num === 1 && activeThemeFilter === "all" && !query) {
+            details.open = true;
+          }
+
+          const studied = Boolean(progress.principlesStudied[p.num]);
+          details.innerHTML = `
+            <summary class="principle-summary">
+              <span class="principle-num">#${p.num}</span>
+              <span>${p.short}</span>
+              <span class="principle-tag">${studied ? "✓ Studied" : p.themeLabel}</span>
+            </summary>
+            <div class="principle-body">
+              <blockquote class="principle-quote">
+                "${p.official}"
+              </blockquote>
+              <div class="info-tile">
+                <h3>In Plain College English</h3>
+                <p>${p.plain}</p>
+              </div>
+              <div class="info-tile">
+                <h3>Campus / Hackathon Example</h3>
+                <p>${p.campus}</p>
+              </div>
+              <div class="info-tile" style="grid-column: 1 / -1;">
+                <h3>Watch Out For (Anti-Pattern)</h3>
+                <p>${p.antiPattern}</p>
+              </div>
+              <div class="principle-actions">
+                <span class="muted">Theme: ${p.themeLabel}</span>
+                <button type="button" class="btn btn-sm ${studied ? "btn-primary" : "btn-soft"}" data-study-p="${p.num}" aria-pressed="${studied}">
+                  ${studied ? "✓ Marked Studied" : "Mark Principle Studied"}
+                </button>
+              </div>
+            </div>
+          `;
+
+          const btn = details.querySelector(`[data-study-p="${p.num}"]`);
+          const tag = details.querySelector(".principle-tag");
+          btn.addEventListener("click", () => {
+            if (progress.principlesStudied[p.num]) {
+              delete progress.principlesStudied[p.num];
+            } else {
+              progress.principlesStudied[p.num] = true;
+            }
+            saveProgress();
+            const now = Boolean(progress.principlesStudied[p.num]);
+            btn.setAttribute("aria-pressed", String(now));
+            btn.className = `btn btn-sm ${now ? "btn-primary" : "btn-soft"}`;
+            btn.textContent = now ? "✓ Marked Studied" : "Mark Principle Studied";
+            tag.textContent = now ? "✓ Studied" : p.themeLabel;
+          });
+
+          accordion.appendChild(details);
+        }
+        syncExpandAllButton();
+      }
+
+      document.querySelectorAll(".filter-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          activeThemeFilter = btn.dataset.filter;
+          document.querySelectorAll(".filter-btn").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+          renderPrinciples();
+        });
+      });
+
+      document.getElementById("principle-search").addEventListener("input", (e) => {
+        searchTerm = e.target.value;
+        renderPrinciples();
+      });
+
+      const toggleAllBtn = document.getElementById("toggle-all-principles");
+      function syncExpandAllButton() {
+        const items = [...document.querySelectorAll("#principles-accordion > details")];
+        const allOpen = items.length > 0 && items.every((d) => d.open);
+        toggleAllBtn.setAttribute("aria-expanded", String(allOpen));
+        toggleAllBtn.textContent = allOpen ? "Collapse all" : "Expand all";
+      }
+
+      toggleAllBtn.addEventListener("click", () => {
+        const expand = toggleAllBtn.getAttribute("aria-expanded") !== "true";
+        document.querySelectorAll("#principles-accordion > details").forEach((d) => {
+          d.open = expand;
+        });
+        syncExpandAllButton();
+      });
+
+      document.getElementById("principles-accordion").addEventListener("toggle", (e) => {
+        if (e.target.matches("details.principle-item")) {
+          syncExpandAllButton();
+        }
+      }, { capture: true });
+
+      /* -----------------------------
+         7. GENERIC ACCESSIBLE TABS CONTROLLER (tabs guidance)
+      ------------------------------ */
+      function initTabs(tablistEl) {
+        const tabs = [...tablistEl.querySelectorAll('[role="tab"]')];
+        const panels = tabs.map((t) => document.querySelector(`[aria-labelledby="${t.id}"]`));
+
+        function activateTab(selectedTab, moveFocus = false) {
+          tabs.forEach((tab, idx) => {
+            const isSel = tab === selectedTab;
+            tab.setAttribute("aria-selected", String(isSel));
+            tab.tabIndex = isSel ? 0 : -1;
+            const panel = panels[idx];
+            if (panel) {
+              if (isSel) {
+                panel.removeAttribute("hidden");
+                panel.tabIndex = 0;
+              } else {
+                panel.setAttribute("hidden", "until-found");
+                panel.removeAttribute("tabindex");
+              }
+            }
+          });
+          selectedTab.scrollIntoView({ block: "nearest", inline: "nearest" });
+          if (moveFocus) selectedTab.focus();
+        }
+
+        tablistEl.addEventListener("click", (e) => {
+          const tab = e.target.closest('[role="tab"]');
+          if (tab) activateTab(tab, true);
+        });
+
+        tablistEl.addEventListener("keydown", (e) => {
+          const current = e.target.closest('[role="tab"]');
+          if (!current) return;
+          const idx = tabs.indexOf(current);
+          let nextIdx = idx;
+          if (e.key === "ArrowRight") nextIdx = (idx + 1) % tabs.length;
+          else if (e.key === "ArrowLeft") nextIdx = (idx - 1 + tabs.length) % tabs.length;
+          else if (e.key === "Home") nextIdx = 0;
+          else if (e.key === "End") nextIdx = tabs.length - 1;
+          else return;
+
+          e.preventDefault();
+          activateTab(tabs[nextIdx], true);
+        });
+
+        // Sync tab state if browser find-in-page opens a hidden=until-found panel
+        panels.forEach((panel, idx) => {
+          if (!panel) return;
+          panel.addEventListener("beforematch", () => {
+            activateTab(tabs[idx], false);
+          });
+        });
+      }
+
+      initTabs(document.getElementById("sandbox-tabs"));
+      initTabs(document.getElementById("test-tabs"));
+
+      /* -----------------------------
+         8. SECTION 3: TRADE-OFF SANDBOX
+      ------------------------------ */
+      const SURPRISE_TEXT = ["None (Static rubric)", "Moderate (Week 4 rubric tweak)", "Major (Showcase pivots to mobile-first)"];
+      const SYNC_TEXT = ["Silent silos (Check-in in Week 5)", "Weekly Slack update", "Twice weekly (10-min standup)"];
+      const SCOPE_TEXT = ["Bloated (12 fancy features)", "Ambitious (7 features)", "Focused MVP (Core map + hours)"];
+
+      const surpriseSlider = document.getElementById("surprise-slider");
+      const syncSlider = document.getElementById("sync-slider");
+      const scopeSlider = document.getElementById("scope-slider");
+
+      function updateSandboxLabels() {
+        document.getElementById("surprise-label").textContent = SURPRISE_TEXT[surpriseSlider.value];
+        document.getElementById("sync-label").textContent = SYNC_TEXT[syncSlider.value];
+        document.getElementById("scope-label").textContent = SCOPE_TEXT[scopeSlider.value];
+      }
+
+      [surpriseSlider, syncSlider, scopeSlider].forEach((el) => {
+        el.addEventListener("input", () => {
+          updateSandboxLabels();
+          runSandbox(false);
+        });
+      });
+      document.querySelectorAll('input[name="methodology"]').forEach((r) => {
+        r.addEventListener("change", () => runSandbox(false));
+      });
+
+      function runSandbox(markComplete = true) {
+        updateSandboxLabels();
+        const method = document.querySelector('input[name="methodology"]:checked').value;
+        const surprise = Number(surpriseSlider.value); // 0, 1, 2
+        const sync = Number(syncSlider.value); // 0, 1, 2
+        const scope = Number(scopeSlider.value); // 0, 1, 2 (2 = focused MVP)
+
+        const weeks = [];
+        if (method === "agile") {
+          const baseGain = 14 + sync * 4 + scope * 5;
+          const baseStress = 18 + (2 - scope) * 14 + (2 - sync) * 10;
+          for (let w = 1; w <= 6; w++) {
+            const hit = w === 4 ? surprise * 10 : 0;
+            const value = Math.min(100, Math.round((w * baseGain) - (w >= 4 ? surprise * 5 : 0)));
+            const stress = Math.min(100, Math.max(8, Math.round(baseStress + hit - sync * 3)));
+            const focusMap = [
+              "Sprint 1: Core setup & tiny clickable list",
+              "Sprint 1 Demo: Test with 3 classmates",
+              "Sprint 2: Build search + building hours",
+              surprise > 0 ? "Sprint 2 Adapt: Fold in rubric change cleanly" : "Sprint 2 Demo: Refine UX",
+              "Sprint 3: Polish MVP & fix mobile bugs",
+              "Demo Day: Confident showcase, normal sleep"
+            ];
+            weeks.push({ week: w, focus: focusMap[w - 1], value, stress });
+          }
+        } else {
+          // Waterfall: 0 working value until week 5/6 integration!
+          const crunchSpike = 35 + surprise * 22 + (2 - sync) * 14 + (2 - scope) * 15;
+          const finalValue = Math.max(25, Math.min(95, 72 - surprise * 18 - (2 - sync) * 10 + scope * 8));
+          const focusMap = [
+            "Write 25-page architecture & requirements spec",
+            "Design full database & UI mockups in isolation",
+            "Code frontend & backend separately (no integration)",
+            surprise > 0 ? "Panic! Spec change breaks frozen Week 1 design" : "Keep coding separate modules",
+            "Late integration! Merge conflicts & broken endpoints",
+            "Crunch all-nighter trying to ship everything at once"
+          ];
+          const valCurve = [0, 0, 5, 10, 35, finalValue];
+          const stressCurve = [15, 22, 35, 48 + surprise * 16, Math.min(100, crunchSpike + 18), Math.min(100, crunchSpike + 25)];
+          for (let w = 1; w <= 6; w++) {
+            weeks.push({ week: w, focus: focusMap[w - 1], value: valCurve[w - 1], stress: stressCurve[w - 1] });
+          }
+        }
+
+        const final = weeks[5];
+        const satisfaction = method === "agile"
+          ? Math.min(99, Math.max(45, final.value - surprise * 3 + sync * 4))
+          : Math.max(20, Math.min(88, final.value - surprise * 12));
+
+        document.getElementById("kpi-features").textContent = `${final.value}%`;
+        document.getElementById("kpi-satisfaction").textContent = `${satisfaction}%`;
+        document.getElementById("kpi-crunch").textContent = final.stress >= 70 ? `High (${final.stress}%)` : final.stress >= 40 ? `Medium (${final.stress}%)` : `Low (${final.stress}%)`;
+
+        // Render accessible table
+        const tbody = document.getElementById("sandbox-tbody");
+        tbody.innerHTML = weeks.map((row) => `
+          <tr>
+            <td>Week ${row.week}</td>
+            <td>${row.focus}</td>
+            <td>${row.value}%</td>
+            <td>${row.stress}%</td>
+          </tr>
+        `).join("");
+
+        // Render SVG trajectory
+        const svg = document.getElementById("sandbox-svg");
+        const xFor = (w) => 55 + (w - 1) * 98;
+        const yFor = (val) => 185 - (val / 100) * 150;
+        const valPts = weeks.map((r) => `${xFor(r.week)},${yFor(r.value)}`).join(" ");
+        const strPts = weeks.map((r) => `${xFor(r.week)},${yFor(r.stress)}`).join(" ");
+
+        svg.innerHTML = `
+          <title id="svg-title">Weekly working value delivered versus team stress over 6 weeks</title>
+          <line x1="50" y1="185" x2="565" y2="185" stroke="currentColor" stroke-opacity="0.35" />
+          <line x1="50" y1="35" x2="50" y2="185" stroke="currentColor" stroke-opacity="0.35" />
+          <text x="12" y="42" font-size="11" fill="currentColor">100%</text>
+          <text x="18" y="114" font-size="11" fill="currentColor">50%</text>
+          <text x="24" y="188" font-size="11" fill="currentColor">0%</text>
+          ${weeks.map((r) => `<text x="${xFor(r.week) - 12}" y="205" font-size="11" fill="currentColor">Wk ${r.week}</text>`).join("")}
+          <polyline fill="none" stroke="var(--warning)" stroke-width="3" stroke-dasharray="6 5" points="${strPts}" />
+          <polyline fill="none" stroke="var(--accent)" stroke-width="3.5" points="${valPts}" />
+          ${weeks.map((r) => `
+            <circle cx="${xFor(r.week)}" cy="${yFor(r.value)}" r="4.5" fill="var(--accent)" />
+            <circle cx="${xFor(r.week)}" cy="${yFor(r.stress)}" r="4" fill="var(--warning)" />
+          `).join("")}
+        `;
+
+        const takeaway = document.getElementById("sandbox-takeaway");
+        if (method === "agile") {
+          takeaway.className = final.stress < 50 ? "feedback-banner ok" : "feedback-banner warn";
+          takeaway.innerHTML = final.stress < 50
+            ? `<strong>Why Agile thrived:</strong> Shipping working slices every 2 weeks (Principle 3) + keeping an MVP scope (Principle 10) meant Week 4 surprises didn't derail Demo Day.`
+            : `<strong>Watch out even in Agile:</strong> Low check-ins or bloated scope still push stress up to ${final.stress}%. Trim features (Principle 10) and sync twice a week (Principle 6)!`;
+        } else {
+          takeaway.className = "feedback-banner bad";
+          takeaway.innerHTML = `<strong>The Waterfall Squeeze:</strong> Zero working software existed until Week 5 integration, so any Week 4 rubric change triggered ${final.stress}% finals-week crunch and late rework.`;
+        }
+
+        if (markComplete && !progress.sandboxRun) {
+          progress.sandboxRun = true;
+          saveProgress();
+          announce("Semester simulation complete and recorded in your study progress.");
+        }
+      }
+
+      document.getElementById("run-sandbox-btn").addEventListener("click", () => runSandbox(true));
+
+      /* -----------------------------
+         9. SECTION 4: SPRINT & KANBAN BOARD SIMULATOR
+      ------------------------------ */
+      let boardStories = structuredClone(INITIAL_STORIES);
+      let curveballIndex = 0;
+
+      function getWipLimit() {
+        return Number(document.getElementById("wip-limit-select").value);
+      }
+
+      function moveStory(id, targetCol) {
+        const story = boardStories.find((s) => s.id === id);
+        if (!story) return;
+        story.col = targetCol;
+        renderBoard();
+        announce(`Moved "${story.title}" to ${targetCol}.`);
+      }
+
+      function renderBoard() {
+        const cols = ["backlog", "todo", "doing", "done"];
+        const wipLimit = getWipLimit();
+
+        for (const col of cols) {
+          const container = document.getElementById(`col-${col}`);
+          const items = boardStories.filter((s) => s.col === col);
+          document.getElementById(`col-count-${col}`).textContent = items.length;
+          container.innerHTML = "";
+
+          for (const s of items) {
+            const card = document.createElement("article");
+            card.className = `story-card${s.curveball ? " is-curveball" : ""}`;
+            card.innerHTML = `
+              <div class="story-meta">
+                <span>${s.points} pt${s.points > 1 ? "s" : ""}</span>
+                <span>Value: +${s.value}</span>
+              </div>
+              <div class="story-title">${s.title}</div>
+              <p class="story-desc">${s.desc}</p>
+              <div class="story-actions"></div>
+            `;
+
+            const actions = card.querySelector(".story-actions");
+            const prevMap = { todo: "backlog", doing: "todo", done: "doing" };
+            const nextMap = { backlog: "todo", todo: "doing", doing: "done" };
+
+            if (prevMap[col]) {
+              const backBtn = document.createElement("button");
+              backBtn.type = "button";
+              backBtn.className = "btn btn-sm";
+              backBtn.textContent = "← Back";
+              backBtn.setAttribute("aria-label", `Move ${s.title} back`);
+              backBtn.addEventListener("click", () => moveStory(s.id, prevMap[col]));
+              actions.appendChild(backBtn);
+            }
+            if (nextMap[col]) {
+              const fwdBtn = document.createElement("button");
+              fwdBtn.type = "button";
+              fwdBtn.className = "btn btn-soft btn-sm";
+              fwdBtn.textContent = col === "doing" ? "Ship to Done →" : "Advance →";
+              fwdBtn.setAttribute("aria-label", `Move ${s.title} forward`);
+              fwdBtn.addEventListener("click", () => moveStory(s.id, nextMap[col]));
+              actions.appendChild(fwdBtn);
+            }
+
+            container.appendChild(card);
+          }
+        }
+
+        const sprintPts = boardStories
+          .filter((s) => s.col !== "backlog")
+          .reduce((sum, s) => sum + s.points, 0);
+        const doingCount = boardStories.filter((s) => s.col === "doing").length;
+        const donePts = boardStories
+          .filter((s) => s.col === "done")
+          .reduce((sum, s) => sum + s.points, 0);
+        const doneValue = boardStories
+          .filter((s) => s.col === "done")
+          .reduce((sum, s) => sum + s.value, 0);
+
+        const capChip = document.getElementById("chip-capacity");
+        const wipChip = document.getElementById("chip-wip");
+        const doneChip = document.getElementById("chip-done");
+
+        capChip.textContent = `Sprint Load: ${sprintPts} / 10 pts`;
+        capChip.className = `metric-chip${sprintPts > 10 ? " alert" : ""}`;
+
+        wipChip.textContent = `In Progress WIP: ${doingCount} / ${wipLimit} cards`;
+        wipChip.className = `metric-chip${doingCount > wipLimit ? " alert" : ""}`;
+        document.getElementById("col-wrapper-doing").classList.toggle("wip-exceeded", doingCount > wipLimit);
+
+        doneChip.textContent = `Delivered Value: ${doneValue} (${donePts} pts)`;
+        doneChip.className = `metric-chip${doneValue >= 60 ? " good" : ""}`;
+
+        const coach = document.getElementById("sprint-coach-banner");
+        if (doingCount > wipLimit) {
+          coach.className = "feedback-banner bad";
+          coach.innerHTML = `<strong>WIP Limit Exceeded (${doingCount}/${wipLimit})!</strong> Starting too many cards at once creates merge conflicts and half-done work. Finish a card before starting another!`;
+        } else if (sprintPts > 10) {
+          coach.className = "feedback-banner warn";
+          coach.innerHTML = `<strong>Sustainable Pace Warning (${sprintPts}/10 pts):</strong> Pulling more than 10 points during exam week risks burnout (Principle 8). Move low-value items like 3D Animations back to Backlog (Principle 10)!`;
+        } else if (doneValue >= 60) {
+          coach.className = "feedback-banner ok";
+          coach.innerHTML = `<strong>Great Sprint Flow!</strong> You focused on high-value MVP stories without overloading the team. Click <strong>Run Sprint Review</strong> to inspect your results.`;
+        } else {
+          coach.className = "feedback-banner";
+          coach.innerHTML = `Coach Tip: Pull high-value MVP stories into <strong>Sprint To Do</strong> (stay within 10 pts), work on at most ${wipLimit} in <strong>In Progress</strong>, and ship them to <strong>Done</strong>.`;
+        }
+      }
+
+      document.getElementById("wip-limit-select").addEventListener("change", renderBoard);
+
+      document.getElementById("curveball-btn").addEventListener("click", () => {
+        if (curveballIndex >= CURVEBALL_CARDS.length) {
+          announce("All mid-sprint curveballs are already on the board.");
+          return;
+        }
+        const card = structuredClone(CURVEBALL_CARDS[curveballIndex++]);
+        boardStories.unshift(card);
+        renderBoard();
+        const coach = document.getElementById("sprint-coach-banner");
+        coach.className = "feedback-banner warn";
+        coach.innerHTML = `<strong>Curveball Arrived:</strong> "${card.title}" landed in Sprint To Do! Practice Principle 2 &amp; 10: drop a low-value card back to Backlog so your Sprint Load stays sustainable.`;
+        announce(`Curveball added: ${card.title}`);
+      });
+
+      document.getElementById("reset-board-btn").addEventListener("click", () => {
+        boardStories = structuredClone(INITIAL_STORIES);
+        curveballIndex = 0;
+        renderBoard();
+        announce("Sprint board reset.");
+      });
+
+      /* -----------------------------
+         10. NATIVE DIALOGS (Glossary & Sprint Review)
+      ------------------------------ */
+      const glossaryDialog = document.getElementById("glossary-dialog");
+      const reviewDialog = document.getElementById("review-dialog");
+      const certificateDialog = document.getElementById("certificate-dialog");
+
+      // Light-dismiss fallback for browsers without <dialog closedby="any">
+      if (!("closedBy" in HTMLDialogElement.prototype)) {
+        const outside = (e, dlg) => {
+          const r = dlg.getBoundingClientRect();
+          return e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
+        };
+        for (const dlg of document.querySelectorAll('dialog[closedby="any"]')) {
+          let pressedOutside = false;
+          dlg.addEventListener("pointerdown", (e) => { pressedOutside = outside(e, dlg); });
+          dlg.addEventListener("pointerup", (e) => { if (pressedOutside && outside(e, dlg)) dlg.close(); });
+        }
+      }
+
+      for (const dlg of [glossaryDialog, reviewDialog, certificateDialog]) {
+        dlg.addEventListener("close", () => {
+          dlg.returnValue = "";
+        });
+      }
+
+      /* -----------------------------
+         10B. CERTIFICATE PREVIEW & PRINT-TO-PDF
+      ------------------------------ */
+      const certForm = document.getElementById("certificate-form");
+      const certNameInput = document.getElementById("cert-student-name");
+      const certNameError = document.getElementById("cert-name-error");
+      const certPreviewSlot = document.getElementById("cert-preview-slot");
+      const printSheet = document.getElementById("print-certificate-sheet");
+
+      function formatCertificateDate() {
+        return new Date().toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        });
+      }
+
+      function renderCertificateInto(container, studentName) {
+        const displayName = studentName.trim() || "Student Name";
+        const dateStr = formatCertificateDate();
+
+        const sheet = document.createElement("article");
+        sheet.className = "certificate-sheet";
+        sheet.innerHTML = `
+          <div class="cert-inner-frame">
+            <div class="cert-seal" aria-hidden="true">Ag</div>
+            <p class="cert-kicker">Certificate of Completion</p>
+            <h2 class="cert-title">Explore Agile Principles</h2>
+            <p class="cert-subtitle">This certifies that</p>
+            <div class="cert-recipient"></div>
+            <p class="cert-summary">
+              has successfully completed all Agile team scenario challenges, principle matching exercises, and knowledge assessments in Agile Studio.
+            </p>
+            <div class="cert-stats">
+              <span>Team Scenarios: 5/5</span>
+              <span>&bull;</span>
+              <span>Principle Matcher: 4/4</span>
+              <span>&bull;</span>
+              <span>Mastery Quiz: ${progress.quizBestScore}%</span>
+            </div>
+            <div class="cert-signatures">
+              <div class="cert-sig-block">
+                <div class="cert-sig-line">${dateStr}</div>
+                <span class="cert-sig-label">Date Completed</span>
+              </div>
+              <div class="cert-sig-block">
+                <div class="cert-sig-line">Professor Sable</div>
+                <span class="cert-sig-label">Instructor</span>
+              </div>
+            </div>
+          </div>
+        `;
+        // Assign user-provided name safely via textContent to prevent HTML injection
+        sheet.querySelector(".cert-recipient").textContent = displayName;
+        container.innerHTML = "";
+        container.appendChild(sheet);
+      }
+
+      function clearCertNameError() {
+        certNameInput.removeAttribute("aria-invalid");
+        certNameError.hidden = true;
+      }
+
+      function openCertificateDialog() {
+        if (!isCertificateEligible()) return;
+        certNameInput.value = progress.studentName || "";
+        clearCertNameError();
+        renderCertificateInto(certPreviewSlot, certNameInput.value);
+        certificateDialog.showModal();
+        certNameInput.focus();
+      }
+
+      document.getElementById("claim-cert-btn").addEventListener("click", openCertificateDialog);
+      document.getElementById("overview-claim-cert-btn").addEventListener("click", openCertificateDialog);
+
+      certNameInput.addEventListener("input", () => {
+        if (certNameInput.value.trim()) {
+          clearCertNameError();
+        }
+        progress.studentName = certNameInput.value;
+        saveProgress();
+        renderCertificateInto(certPreviewSlot, certNameInput.value);
+      });
+
+      certNameInput.addEventListener("blur", () => {
+        if (certNameInput.value && !certNameInput.value.trim()) {
+          certNameInput.setAttribute("aria-invalid", "true");
+          certNameError.hidden = false;
+        }
+      });
+
+      const originalDocTitle = document.title;
+      window.addEventListener("afterprint", () => {
+        document.title = originalDocTitle;
+      });
+
+      certForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const cleanedName = certNameInput.value.trim();
+        if (!cleanedName) {
+          certNameInput.setAttribute("aria-invalid", "true");
+          certNameError.hidden = false;
+          certNameInput.focus();
+          return;
+        }
+        clearCertNameError();
+        progress.studentName = cleanedName;
+        saveProgress();
+
+        renderCertificateInto(printSheet, cleanedName);
+        document.title = `Explore Agile Principles Certificate - ${cleanedName}`;
+        certificateDialog.close();
+        requestAnimationFrame(() => {
+          window.print();
+        });
+      });
+
+      document.getElementById("open-glossary-btn").addEventListener("click", () => {
+        glossaryDialog.showModal();
+      });
+
+      document.getElementById("sprint-review-btn").addEventListener("click", () => {
+        const doneCards = boardStories.filter((s) => s.col === "done");
+        const doingCards = boardStories.filter((s) => s.col === "doing");
+        const sprintPts = boardStories.filter((s) => s.col !== "backlog").reduce((sum, s) => sum + s.points, 0);
+        const donePts = doneCards.reduce((sum, s) => sum + s.points, 0);
+        const doneValue = doneCards.reduce((sum, s) => sum + s.value, 0);
+        const skippedTrap = !doneCards.some((s) => s.id === "s5");
+
+        const body = document.getElementById("review-body");
+        body.innerHTML = `
+          <div class="kpi-row" style="margin-block-end: 1rem;">
+            <div class="kpi-box"><div class="kpi-label">Velocity (Done Pts)</div><div class="kpi-value">${donePts} pts</div></div>
+            <div class="kpi-box"><div class="kpi-label">Student Value Shipped</div><div class="kpi-value">${doneValue}</div></div>
+            <div class="kpi-box"><div class="kpi-label">Left Unfinished (WIP)</div><div class="kpi-value">${doingCards.length}</div></div>
+          </div>
+          <div class="feedback-banner ${doneCards.length >= 2 && sprintPts <= 10 ? "ok" : "warn"}">
+            <p><strong>Principle 7 Check (Working Software):</strong> You shipped <strong>${doneCards.length}</strong> demo-ready feature${doneCards.length === 1 ? "" : "s"}.</p>
+            <p style="margin-block-start: 0.4rem;"><strong>Principle 8 Check (Sustainable Pace):</strong> ${sprintPts <= 10 ? "Great restraint—staying within 10 points kept stress healthy!" : `You overloaded the sprint (${sprintPts}/10 pts). Trim lower-priority cards next time.`}</p>
+            <p style="margin-block-start: 0.4rem;"><strong>Principle 10 Check (Simplicity):</strong> ${skippedTrap ? "Smart! You avoided wasting 5 points on the low-value 3D Flythrough." : "Heads up: you spent 5 points on 3D Animations that added almost no core value."}</p>
+          </div>
+          <p class="muted" style="margin-block-start: 0.85rem;">Retrospective Question: What one process tweak would help your real group project ship more Done work next week?</p>
+        `;
+
+        if (doneCards.length >= 1 && !progress.sprintReviewed) {
+          progress.sprintReviewed = true;
+          saveProgress();
+        }
+        reviewDialog.showModal();
+      });
+
+      /* -----------------------------
+         11. SECTION 5: KNOWLEDGE TESTS
+      ------------------------------ */
+      function renderScenarios() {
+        const container = document.getElementById("scenarios-container");
+        container.innerHTML = "";
+        const wrap = document.createElement("div");
+        wrap.style.cssText = "display: flex; flex-direction: column; gap: 1rem;";
+
+        for (const sc of SCENARIOS) {
+          const card = document.createElement("article");
+          card.className = "scenario-card";
+          const solved = Boolean(progress.scenariosSolved[sc.id]);
+
+          card.innerHTML = `
+            <div class="row-wrap" style="justify-content: space-between;">
+              <h3>${sc.title}</h3>
+              <span class="col-count">${solved ? "✓ Solved" : "Try it"}</span>
+            </div>
+            <p>${sc.prompt}</p>
+            <div class="choice-list"></div>
+            <div class="feedback-banner" id="sc-fb-${sc.id}" hidden></div>
+          `;
+
+          const list = card.querySelector(".choice-list");
+          const fb = card.querySelector(`#sc-fb-${sc.id}`);
+
+          sc.choices.forEach((choice) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "btn choice-btn";
+            btn.textContent = choice.text;
+            btn.addEventListener("click", () => {
+              list.querySelectorAll("button").forEach((b) => {
+                b.classList.remove("is-correct", "is-wrong");
+              });
+              btn.classList.add(choice.correct ? "is-correct" : "is-wrong");
+              fb.hidden = false;
+              fb.className = `feedback-banner ${choice.correct ? "ok" : "bad"}`;
+              fb.textContent = (choice.correct ? "✓ Best Agile Move: " : "Not quite: ") + choice.reason;
+
+              if (choice.correct) {
+                progress.scenariosSolved[sc.id] = true;
+                saveProgress();
+                card.querySelector(".col-count").textContent = "✓ Solved";
+              }
+              announce(fb.textContent);
+            });
+            list.appendChild(btn);
+          });
+
+          wrap.appendChild(card);
+        }
+        container.appendChild(wrap);
+      }
+
+      function renderMatcher() {
+        const container = document.getElementById("matcher-container");
+        container.innerHTML = "";
+
+        for (const item of MATCHER_ITEMS) {
+          const row = document.createElement("div");
+          row.className = "matcher-row";
+          const optsHtml = MATCHER_OPTIONS.map((o) => `<option value="${o.value}">${o.label}</option>`).join("");
+          row.innerHTML = `
+            <label for="match-${item.id}">${item.clue}</label>
+            <select id="match-${item.id}" class="select-input" data-match-id="${item.id}">
+              ${optsHtml}
+            </select>
+          `;
+          container.appendChild(row);
+        }
+      }
+
+      document.getElementById("check-matcher-btn").addEventListener("click", () => {
+        let correct = 0;
+        for (const item of MATCHER_ITEMS) {
+          const sel = document.getElementById(`match-${item.id}`);
+          if (sel.value === item.answer) correct++;
+        }
+        const res = document.getElementById("matcher-result");
+        res.hidden = false;
+        if (correct === MATCHER_ITEMS.length) {
+          res.className = "feedback-banner ok";
+          res.textContent = `✓ Perfect 4/4! You matched every campus habit to its Agile Principle.`;
+          progress.matcherPassed = true;
+          saveProgress();
+        } else {
+          res.className = "feedback-banner warn";
+          res.textContent = `You matched ${correct} of ${MATCHER_ITEMS.length} correctly. Hint: Look closely at Simplicity (#10), Retrospectives (#12), Sustainable Pace (#8), and Early Delivery (#1).`;
+        }
+        announce(res.textContent);
+      });
+
+      document.getElementById("reset-matcher-btn").addEventListener("click", () => {
+        document.querySelectorAll("#matcher-container select").forEach((s) => { s.value = ""; });
+        document.getElementById("matcher-result").hidden = true;
+      });
+
+      function renderQuiz() {
+        const container = document.getElementById("quiz-container");
+        container.innerHTML = `
+          <form id="mastery-quiz-form" style="display: flex; flex-direction: column; gap: 1.15rem;">
+            ${QUIZ_QUESTIONS.map((item, qIdx) => `
+              <fieldset class="quiz-question-box">
+                <legend style="font-weight: 800; margin-block-end: 0.35rem;">${item.q}</legend>
+                ${item.options.map((opt, oIdx) => `
+                  <label class="quiz-option-label">
+                    <input type="radio" name="q-${qIdx}" value="${oIdx}" required>
+                    <span>${opt}</span>
+                  </label>
+                `).join("")}
+                <div class="feedback-banner" id="q-fb-${qIdx}" hidden></div>
+              </fieldset>
+            `).join("")}
+            <div class="row-wrap">
+              <button type="submit" class="btn btn-primary">Grade My Knowledge Quiz</button>
+              <button type="button" class="btn" id="reset-quiz-btn">Clear Answers</button>
+            </div>
+            <div class="feedback-banner" id="quiz-summary" hidden></div>
+          </form>
+        `;
+
+        const form = document.getElementById("mastery-quiz-form");
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          let score = 0;
+          QUIZ_QUESTIONS.forEach((item, qIdx) => {
+            const chosen = form.querySelector(`input[name="q-${qIdx}"]:checked`);
+            const val = chosen ? Number(chosen.value) : -1;
+            const fb = document.getElementById(`q-fb-${qIdx}`);
+            fb.hidden = false;
+            if (val === item.correct) {
+              score++;
+              fb.className = "feedback-banner ok";
+              fb.textContent = `✓ Correct! ${item.explain}`;
+            } else {
+              fb.className = "feedback-banner bad";
+              fb.textContent = `✗ Incorrect. Correct answer: "${item.options[item.correct]}". ${item.explain}`;
+            }
+          });
+
+          const pct = Math.round((score / QUIZ_QUESTIONS.length) * 100);
+          const summary = document.getElementById("quiz-summary");
+          summary.hidden = false;
+          summary.className = `feedback-banner ${pct >= 80 ? "ok" : "warn"}`;
+          summary.innerHTML = `<strong>Final Quiz Score: ${score} / ${QUIZ_QUESTIONS.length} (${pct}%)</strong> &mdash; ${
+            pct >= 80
+              ? "Excellent! You have a strong practical grasp of Agile Values and Principles."
+              : "Review the explanations above and retake anytime to hit 80%+."
+          }`;
+
+          progress.quizCompleted = true;
+          progress.quizBestScore = Math.max(progress.quizBestScore, pct);
+          saveProgress();
+          announce(`Quiz graded: ${score} out of ${QUIZ_QUESTIONS.length}, or ${pct} percent.`);
+        });
+
+        document.getElementById("reset-quiz-btn").addEventListener("click", () => {
+          form.reset();
+          QUIZ_QUESTIONS.forEach((_, qIdx) => {
+            document.getElementById(`q-fb-${qIdx}`).hidden = true;
+          });
+          document.getElementById("quiz-summary").hidden = true;
+        });
+      }
+
+      /* -----------------------------
+         12. INITIALIZE APP
+      ------------------------------ */
+      renderProgressUI();
+      renderValues();
+      renderPrinciples();
+      runSandbox(false);
+      renderBoard();
+      renderScenarios();
+      renderMatcher();
+      renderQuiz();
+    })();
+  </script>
+</body>
+</html>
