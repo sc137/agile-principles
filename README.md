@@ -2,6 +2,8 @@
 
 An interactive, single-file HTML learning lab designed for college students with little or no prior industry experience to explore the **4 Agile Manifesto Values** and **12 Agile Principles** through campus group-project analogies, hands-on simulations, and knowledge checks.
 
+🔗 **Live site:** [sc137.github.io/agile-principles](https://sc137.github.io/agile-principles/)
+
 Prepared by **Professor Sable** ([cantus.us/msac](https://cantus.us/msac)) for **CISP 10** at Mt. San Antonio College (Mt. SAC) and open for anyone learning Agile fundamentals.
 
 ---
